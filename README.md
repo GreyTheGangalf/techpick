@@ -11,9 +11,9 @@ Next.js (App Router) + TypeScript + Tailwind + shadcn/ui, Supabase PostgreSQL, D
 ## Repository layout
 
 ```
-apps/web         Next.js site
-packages/engine  Recommendation engine + unit tests
-ingest/          Python price and data collectors
-db/              Schema and migrations
+apps/web         Next.js site (@techpick/web)
+packages/engine  Recommendation engine (TypeScript) + unit tests
+packages/db      Drizzle schema and migrations (@techpick/db)
+ingest/          Python data and price collectors (outside the pnpm workspace)
 docs/            Product card and decision log
 ```

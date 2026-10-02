@@ -27,10 +27,10 @@ I am a final-year CS student and I want to learn while building this. The output
 Next.js (App Router) + TypeScript + Tailwind + shadcn/ui, Supabase PostgreSQL, Drizzle ORM, Python ingestion (GitHub Actions cron), Vercel.
 
 ```
-apps/web         Next.js site
+apps/web         Next.js site (@techpick/web)
 packages/engine  Recommendation engine (TypeScript) + unit tests
-ingest/          Python data and price collectors
-db/              Drizzle schema and migrations
+packages/db      Drizzle schema and migrations (@techpick/db)
+ingest/          Python data and price collectors (outside the pnpm workspace)
 docs/            Product card and decision log
 ```
 
