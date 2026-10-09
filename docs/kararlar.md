@@ -15,6 +15,7 @@ Her çalışma oturumundan sonra buraya kısa bir not ekle: tarih, ne karar veri
 | 26 Eyl 2026 | Öncelik | Bu dönemin ana projesi TechPick. How's my puck MVP yayınlanana kadar kod olarak rafta; sadece veri toplanıyor. | Haftada 10-15 saat iki projeye yetmez. |
 | 26 Eyl 2026 | Çalışma şekli | Tasarım ve "neden" soruları bu projedeki sohbetlerde; kod Claude Code'da Learning modunda. Açıklayamadığım satırı commit etmiyorum. | Amaç ürün kadar öğrenmek. |
 | 26 Eyl 2026 | Faz 2 bağlantısı | Serbest metin → sihirbaz kriterleri, Ollama ile yapılandırılmış çıktı deneyi olarak yapılacak; aynı zamanda LLM öğrenme projesi. | TechPick ve öğrenme hattı örtüşüyor. |
+| 2 Eki 2026 | db paketi | Şema ve migration'lar `packages/db` altında, `@techpick/db` adıyla. `ingest/` workspace dışında, Python. | Şemayı web ve engine paylaşır; Python'u pnpm yönetmez. |
 
 ## Açık işler
 
