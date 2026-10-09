@@ -1,3 +1,4 @@
 {
-  "outputStyle": "Learning"
+  "outputStyle": "Learning",
+  "permissions": { "deny": ["Read(./.env)", "Read(./**/.env)"] }
 }
