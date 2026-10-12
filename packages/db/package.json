@@ -1,0 +1,17 @@
+{
+  "name": "@techpick/db",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.4",
+    "postgres": "^3.4.9"
+  },
+  "devDependencies": {
+    "dotenv": "^18.0.7",
+    "drizzle-kit": "^0.31.11"
+  }
+}
