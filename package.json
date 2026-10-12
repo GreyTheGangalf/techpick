@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "pnpm --filter @techpick/web dev",
     "build": "pnpm --filter @techpick/web build",
-    "lint": "pnpm --filter @techpick/web lint"
+    "lint": "pnpm --filter @techpick/web lint",
+    "db:generate": "pnpm --filter @techpick/db db:generate",
+    "db:migrate": "pnpm --filter @techpick/db db:migrate"
   }
 }
