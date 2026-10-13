@@ -46,4 +46,13 @@ Tables: `model_families`, `configurations`, `cpus`, `gpus`, `stores`, `offers`, 
 
 ## Commands
 
-To be filled in as the project is set up (install, dev, test, migrate).
+Run from the repo root:
+
+```
+pnpm install       Install all workspace dependencies
+pnpm dev           Start the Next.js dev server (apps/web)
+pnpm build         Production build of apps/web
+pnpm lint          Lint apps/web
+pnpm db:generate   Generate a migration from packages/db/src/schema.ts
+pnpm db:migrate    Apply migrations to Supabase (needs .env in the repo root)
+```
