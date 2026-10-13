@@ -19,9 +19,9 @@ export const configurations = pgTable("configurations",
     variantName: text("variant_name").notNull(),
     mpn: text("mpn").unique(),
     os: osEnum("os").notNull(),
-    cpuModel: text("cpu_model").notNull(),
-    gpuModel:  text("gpu_model").notNull(),
-    gpuTgpW: integer("gpu_tgp_w"),             // bkz. soru B
+    cpuId: integer("cpu_id").notNull().references(() => cpus.id),
+    gpuId:  integer("gpu_id").notNull().references(() => gpus.id),
+    gpuTgpW: integer("gpu_tgp_w"),             
     ramGb: integer("ram_gb").notNull(),
     storageGb: integer("storage_gb").notNull(),
     weightG: integer("weight_g").notNull(),
@@ -59,3 +59,21 @@ export const offers = pgTable(
   // FIX: one offer per configuration + store + seller (decision of 29 Sep)
 (t) => [unique().on(t.configurationId, t.storeId, t.sellerName)],
 ).enableRLS();
+
+export const cpus = pgTable("cpus", {
+id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+model: text("model").notNull().unique(),                
+vendor: text("vendor").notNull(),                        
+cb2024Single: integer("cb2024_single").notNull(),        
+cb2024Multi: integer("cb2024_multi").notNull(),          
+createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}).enableRLS();
+
+export const gpus = pgTable("gpus",{
+id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+model: text("model").notNull().unique(),                 
+vendor: text("vendor").notNull(),
+timespyGraphics: integer("timespy_graphics").notNull(),
+timespyRefTgpW: integer("timespy_ref_tgp_w"),
+createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}).enableRLS();
