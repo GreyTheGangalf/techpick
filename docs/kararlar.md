@@ -29,6 +29,7 @@ Her çalışma oturumundan sonra buraya kısa bir not ekle: tarih, ne karar veri
 | 12 Eki 2026 | Adlandırma | SQL sütunları snake_case ve birim adında (`weight_g`); TS alanları camelCase. Ekran `numeric(3,1)`. | Okunabilirlik, tutarlılık. |
 | 12 Eki 2026 | RLS | Tüm tablolarda RLS açık, policy yok; RLS migration'da tutulur. | Supabase REST API anon key ile herkese açık. |
 | 12 Eki 2026 | Çalışma şekli | Yeni konularda önce çözülmüş örnek, sonra azalan destek. | Boş sayfadan yazmak öğretici olmadı. |
+| 13 Eki 2026 | Benchmark | CPU: Cinebench 2024 single/multi; GPU: Time Spy Graphics + ölçüldüğü TGP. TGP düzeltmesi motorda formülle yapılır. | Veri DB’de, mantık motorda; watt başına puan verisi çoğu GPU için yok.
 
 ## Açık işler
 

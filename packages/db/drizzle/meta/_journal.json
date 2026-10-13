@@ -15,6 +15,13 @@
       "when": 1791835188839,
       "tag": "0001_rainy_swordsman",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791893520746,
+      "tag": "0002_omniscient_secret_warriors",
+      "breakpoints": true
     }
   ]
 }
