@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate"
+    "db:migrate": "drizzle-kit migrate",
+    "db:seed": "node --env-file=../../.env seed/seed.ts"
   },
   "dependencies": {
     "drizzle-orm": "^0.45.4",
