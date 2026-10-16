@@ -2,14 +2,11 @@ import { readFileSync } from "node:fs";
 import { sql } from "drizzle-orm";
 import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { cpus, gpus } from "../src/schema.ts";
+import { configurations, cpus, gpus, modelFamilies, osEnum } from "../src/schema.ts";
 
 type Db = PostgresJsDatabase;
 type CsvRow = Record<string, string>;
 
-// Read a CSV next to this file into objects keyed by the header row.
-// Our data has no commas or quotes inside values, so a plain split is enough;
-// the column-count check makes sure that assumption fails loudly if it breaks.
 function readCsv(fileName: string): CsvRow[] {
   const text = readFileSync(new URL(fileName, import.meta.url), "utf8")
     .replace(/^﻿/, ""); // Windows editors may add an invisible BOM at the start
@@ -25,7 +22,6 @@ function readCsv(fileName: string): CsvRow[] {
   });
 }
 
-// CSV values are always strings; reject anything that is not a whole number.
 function toInt(value: string, field: string): number {
   const n = Number(value);
   if (value === "" || !Number.isInteger(n)) {
@@ -40,11 +36,8 @@ async function seedCpus(db: Db) {
     vendor: r.vendor,
     cb2024Single: toInt(r.cb2024_single, "cb2024_single"),
     cb2024Multi: toInt(r.cb2024_multi, "cb2024_multi"),
-    // `source` is intentionally dropped: it documents the CSV, not the DB.
   }));
 
-  // Upsert: insert new models, update scores of models that already exist.
-  // `excluded` is Postgres's name for "the row we tried to insert".
   await db
     .insert(cpus)
     .values(rows)
@@ -87,9 +80,93 @@ async function seedGpus(db: Db) {
   console.log(`gpus: ${rows.length} rows upserted`);
 }
 
+function toDecimal(value: string, field: string): number {
+  const n = Number(value);
+  if (value === "" || Number.isNaN(n)) {
+    throw new Error(`${field}: "${value}" is not a number`);
+  }
+  return n;
+}
+
+function toIdMap(rows: { id: number; key: string }[]): Map<string, number> {
+  return new Map(rows.map((r) => [r.key, r.id]));
+}
+
 const url = process.env.DATABASE_URL;
 if (!url) {
   throw new Error("DATABASE_URL is not set in the root .env");
+}
+
+function lookup(map: Map<string, number>, name: string, what: string, line: number): number {
+  const id = map.get(name);
+  if (id === undefined) {
+    throw new Error(`configurations.csv line ${line}: unknown ${what} "${name}" (add it to ${what}s.csv first)`);
+  }
+  return id;
+}
+
+async function seedConfigurations(db: Db) {
+  const csv = readCsv("configurations.csv");
+
+  const familyRows = [...new Map(csv.map((r) => [`${r.brand}|${r.family}`, { brand: r.brand, name: r.family }])).values()];
+  await db.insert(modelFamilies).values(familyRows).onConflictDoNothing();
+
+  const familyIds = toIdMap(
+    (await db.select({ id: modelFamilies.id, brand: modelFamilies.brand, name: modelFamilies.name }).from(modelFamilies))
+      .map((f) => ({ id: f.id, key: `${f.brand}|${f.name}` })),
+  );
+  const cpuIds = toIdMap(await db.select({ id: cpus.id, key: cpus.model }).from(cpus));
+  const gpuIds = toIdMap(await db.select({ id: gpus.id, key: gpus.model }).from(gpus));
+
+  const rows = csv.map((r, i) => {
+    const line = i + 2; 
+    return {
+      familyId: lookup(familyIds, `${r.brand}|${r.family}`, "family", line),
+      cpuId: lookup(cpuIds, r.cpu, "cpu", line),
+      gpuId: lookup(gpuIds, r.gpu, "gpu", line),
+      variantName: r.variant_name,
+      mpn: r.mpn === "" ? null : r.mpn,
+      os: toOs(r.os, line),
+      gpuTgpW: toIntOrNull(r.gpu_tgp_w, "gpu_tgp_w"),
+      ramGb: toInt(r.ram_gb, "ram_gb"),
+      storageGb: toInt(r.storage_gb, "storage_gb"),
+      weightG: toInt(r.weight_g, "weight_g"),
+      batteryWh: toInt(r.battery_wh, "battery_wh"),
+      screenSizeIn: toDecimal(r.screen_size_in, "screen_size_in"),
+    };
+  });
+
+  await db
+    .insert(configurations)
+    .values(rows)
+    .onConflictDoUpdate({
+      target: [configurations.familyId, configurations.variantName],
+      set: {
+        mpn: sql`excluded.mpn`,
+        os: sql`excluded.os`,
+        cpuId: sql`excluded.cpu_id`,
+        gpuId: sql`excluded.gpu_id`,
+        gpuTgpW: sql`excluded.gpu_tgp_w`,
+        ramGb: sql`excluded.ram_gb`,
+        storageGb: sql`excluded.storage_gb`,
+        weightG: sql`excluded.weight_g`,
+        batteryWh: sql`excluded.battery_wh`,
+        screenSizeIn: sql`excluded.screen_size_in`,
+      },
+    });
+
+  console.log(`model_families: ${familyRows.length} in CSV, configurations: ${rows.length} rows upserted`);
+}
+
+type Os = (typeof osEnum.enumValues)[number]
+
+function toOs(value: string, line: number): Os {
+  const allowed: readonly string[] = osEnum.enumValues;
+
+  if(!allowed.includes(value)){
+    throw new Error(`configurations.csv line ${line}: os "${value}" must be one of ${allowed.join(", ")}`);
+  }
+  return value as Os;
 }
 
 const client = postgres(url);
@@ -97,6 +174,7 @@ try {
   const db = drizzle(client);   // create the Drizzle wrapper once, reuse it for every table
   await seedCpus(db);
   await seedGpus(db);
+  await seedConfigurations(db);
 } finally {
   await client.end();
 }
