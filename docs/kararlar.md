@@ -30,6 +30,11 @@ Her çalışma oturumundan sonra buraya kısa bir not ekle: tarih, ne karar veri
 | 12 Eki 2026 | RLS | Tüm tablolarda RLS açık, policy yok; RLS migration'da tutulur. | Supabase REST API anon key ile herkese açık. |
 | 12 Eki 2026 | Çalışma şekli | Yeni konularda önce çözülmüş örnek, sonra azalan destek. | Boş sayfadan yazmak öğretici olmadı. |
 | 13 Eki 2026 | Benchmark | CPU: Cinebench 2024 single/multi; GPU: Time Spy Graphics + ölçüldüğü TGP. TGP düzeltmesi motorda formülle yapılır. | Veri DB’de, mantık motorda; watt başına puan verisi çoğu GPU için yok.
+|13 Eki: Benchmark verisi tek kaynaktan (Notebookcheck ortalamaları), sadece notebook CPU'ları, tam sayıya yuvarlanmış. CSV'ler packages/db/seed/ altında.|
+|14 Eki (açık): Time Spy macOS'ta yok; Apple GPU'larının skorlanması motor haftasında karara bağlanacak|
+|14 Eki: Seed verisi packages/db/seed/*.csv'de, pnpm db:seed ile upsert ediliyor (model adı anahtar). İsim değişince eski satır elle silinir. Entegre GPU'larda TGP boş (NULL).|
+|15 Eki: Aynı şasinin RAM/depolama/nesil farkları aynı aile altında ayrı konfigürasyon. Aile adı nesil kodu içermez (çeşitlilik kuralı aileye bakar).|
+| 16 Eki 2026 | Normalizasyon | Ham CPU/GPU metni önce aliases.csv, sonra kural tabanlı anahtarla eşleşir; eşleşmeyen manuel incelemeye düşer. Onaylanan her eşleşme aliases.csv’ye yazılır. | Elle girişi azaltır; alias’lar ileride ayrı normalizasyon reposunun test seti olur. |
 
 ## Açık işler
 
