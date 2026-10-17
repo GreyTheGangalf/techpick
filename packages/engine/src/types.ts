@@ -1,3 +1,15 @@
+export type Profile = "student" | "software" | "gaming" | "creative";
+export type ScreenSize = "small" | "medium" | "large";
+
+export type Answers = {
+  budgetKurus: number;
+  profiles: Profile[];
+  portability: "rarely" | "sometimes" | "daily";
+  screenSizes: ScreenSize[];                         // empty = any size
+  os: ("windows" | "macos" | "linux")[];             // empty = any OS
+};
+
+
 export type Candidate = {
   configurationId: number;
   familyId: number;           
