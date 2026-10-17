@@ -55,4 +55,5 @@ pnpm build         Production build of apps/web
 pnpm lint          Lint apps/web
 pnpm db:generate   Generate a migration from packages/db/src/schema.ts
 pnpm db:migrate    Apply migrations to Supabase (needs .env in the repo root)
+pnpm db:seed       Upsert CSV data from packages/db/seed into the database (safe to re-run)
 ```

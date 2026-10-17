@@ -30,6 +30,11 @@ Her çalışma oturumundan sonra buraya kısa bir not ekle: tarih, ne karar veri
 | 12 Eki 2026 | RLS | Tüm tablolarda RLS açık, policy yok; RLS migration'da tutulur. | Supabase REST API anon key ile herkese açık. |
 | 12 Eki 2026 | Çalışma şekli | Yeni konularda önce çözülmüş örnek, sonra azalan destek. | Boş sayfadan yazmak öğretici olmadı. |
 | 13 Eki 2026 | Benchmark | CPU: Cinebench 2024 single/multi; GPU: Time Spy Graphics + ölçüldüğü TGP. TGP düzeltmesi motorda formülle yapılır. | Veri DB’de, mantık motorda; watt başına puan verisi çoğu GPU için yok.
+| 13 Eki 2026 | Benchmark kaynağı | Tek kaynak Notebookcheck; sadece notebook CPU'ları; skorlar tam sayıya yuvarlanır. | Farklı kaynakların skorları karşılaştırılamaz. |
+| 14 Eki 2026 | Seed | CSV'ler packages/db/seed/ altında; pnpm db:seed model adına göre upsert eder. İsim değişince eski satır elle silinir. | Tekrar çalıştırılabilir, elle id girilmez. |
+| 14 Eki 2026 | Apple GPU (açık) | Time Spy macOS'ta yok; Apple GPU skorlaması motor haftasında karara bağlanacak. | gpu_id NOT NULL. |
+| 15 Eki 2026 | Aile ve konfigürasyon | Aynı şasinin RAM/depolama/nesil farkları aynı aile altında ayrı konfigürasyon; aile adı nesil kodu içermez. | Çeşitlilik kuralı aileye bakar. |
+| 16 Eki 2026 | Configurations seed | CSV'de CPU/GPU adla yazılır, seed adı id'ye çevirir; bilinmeyen adda satır numarasıyla durur. Boş MPN NULL olur. | Id'ler DB'de üretilir, sabit değildir. |
 
 ## Açık işler
 
