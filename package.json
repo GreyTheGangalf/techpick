@@ -8,6 +8,7 @@
     "lint": "pnpm --filter @techpick/web lint",
     "db:generate": "pnpm --filter @techpick/db db:generate",
     "db:migrate": "pnpm --filter @techpick/db db:migrate",
-    "db:seed": "pnpm --filter @techpick/db db:seed"
+    "db:seed": "pnpm --filter @techpick/db db:seed",
+    "test": "pnpm --filter @techpick/engine test"
   }
 }
