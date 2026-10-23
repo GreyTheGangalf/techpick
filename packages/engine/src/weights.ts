@@ -1,6 +1,7 @@
 import type { Profile } from "./types.ts";
 import type { SubScores } from "./scores.ts";
 
+
 export type Weights = Record<keyof SubScores, number>;
 
 export const PROFILE_WEIGHTS: Record<Profile,Weights> = {
@@ -35,7 +36,7 @@ export function combineWeights(profiles: Profile[]): Weights {
             value: avg("value"),
     };
 }
-// Weighted sum of sub-scores; result is 0-100 because weights sum to 100.
+
 export function weightedScore(sub: SubScores, w: Weights): number {
     let sum = 0;
 
