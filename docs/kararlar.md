@@ -36,6 +36,7 @@ Her çalışma oturumundan sonra buraya kısa bir not ekle: tarih, ne karar veri
 | 15 Eki 2026 | Aile ve konfigürasyon | Aynı şasinin RAM/depolama/nesil farkları aynı aile altında ayrı konfigürasyon; aile adı nesil kodu içermez. | Çeşitlilik kuralı aileye bakar. |
 | 16 Eki 2026 | Configurations seed | CSV'de CPU/GPU adla yazılır, seed adı id'ye çevirir; bilinmeyen adda satır numarasıyla durur. Boş MPN NULL olur. | Id'ler DB'de üretilir, sabit değildir. |
 | 17 Eki 2026 | Motor temeli | Motor saf fonksiyon, DB'ye dokunmaz; testler node:test ile. Normalizasyon aday küme içinde min-max, eşitlikte 100. GPU: skor × (TGP/ref)^0.5, oran 1'de kesilir. | Test edilebilirlik; üs senaryolarla ayarlanacak. |
+| 17 Eki 2026 | Kesin filtreler | fiyat×100 ≤ bütçe×105 (tam sayı), ekran grupları <15 / 15-16.9 / ≥17, FreeDOS Windows sayılır ve zayıf yön olarak söylenir. |
 
 ## Açık işler
 
