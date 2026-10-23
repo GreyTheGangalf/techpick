@@ -37,7 +37,8 @@ Her çalışma oturumundan sonra buraya kısa bir not ekle: tarih, ne karar veri
 | 16 Eki 2026 | Configurations seed | CSV'de CPU/GPU adla yazılır, seed adı id'ye çevirir; bilinmeyen adda satır numarasıyla durur. Boş MPN NULL olur. | Id'ler DB'de üretilir, sabit değildir. |
 | 17 Eki 2026 | Motor temeli | Motor saf fonksiyon, DB'ye dokunmaz; testler node:test ile. Normalizasyon aday küme içinde min-max, eşitlikte 100. GPU: skor × (TGP/ref)^0.5, oran 1'de kesilir. | Test edilebilirlik; üs senaryolarla ayarlanacak. |
 | 17 Eki 2026 | Kesin filtreler | fiyat×100 ≤ bütçe×105 (tam sayı), ekran grupları <15 / 15-16.9 / ≥17, FreeDOS Windows sayılır ve zayıf yön olarak söylenir. |
-23 Eki | Alt skorlar | CPU = single ve multi ayrı normalize edilip ortalanır; taşınabilirlik = ağırlık (düşük iyi) ve pil ortalaması; ekran panel verisi olmadığı için herkese 100; fiyat/perf = (CPU+GPU)/2 ÷ fiyat. | Ölçekleri farklı değerler ham ortalanırsa büyük olan baskın çıkar.
+| 23 Eki | Alt skorlar | CPU = single ve multi ayrı normalize edilip ortalanır; taşınabilirlik = ağırlık (düşük iyi) ve pil ortalaması; ekran panel verisi olmadığı için herkese 100; fiyat/perf = (CPU+GPU)/2 ÷ fiyat. | Ölçekleri farklı değerler ham ortalanırsa büyük olan baskın çıkar. |
+| 23 Eki 2026 | Cezalar | Bütçe aşımı doğrusal: bütçede 0, %5 aşımda −10 puan. Günlük taşıyanda 2200 g üstü −10. Sayılar penalties.ts'te sabit. | Kullanıcı testlerinden sonra ayarlanacak. |
 
 ## Açık işler
 
