@@ -4,7 +4,8 @@ export type Candidate = {
   os: "windows" | "macos" | "linux" | "none";
   cpu: { model: string; cb2024Single: number; cb2024Multi: number };
   gpu: { model: string; timespyGraphics: number; timespyRefTgpW: number | null };
-  gpuTgpW: number | null;     
+  gpuTgpW: number | null; 
+  ramGb: number;    
   storageGb: number;
   weightG: number;
   batteryWh: number;

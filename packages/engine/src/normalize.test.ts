@@ -16,3 +16,11 @@ test("a single candidate gets 100 instead of NaN", () => {
 test("equal candidates all get 100", () => {
   assert.deepEqual(normalize([500, 500]), [100, 100]);
 });
+
+test("lowerIsBetter: lightest gets 100, heaviest gets 0", () => {
+  assert.deepEqual(normalize([1500, 2000, 2500], true), [100, 50, 0]);
+});
+
+test("lowerIsBetter still gives 100 to equal candidates", () => {
+  assert.deepEqual(normalize([1800, 1800], true), [100, 100]);
+});
