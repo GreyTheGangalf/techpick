@@ -3,7 +3,6 @@ import assert from "node:assert/strict";
 import { filterCandidates, screenSizeOf } from "./filter.ts";
 import type { Answers, Candidate } from "./types.ts";
  
-// Build a valid candidate and override only the fields a test cares about.
 function makeCandidate(overrides: Partial<Candidate> = {}): Candidate {
   return {
     configurationId: 1,
