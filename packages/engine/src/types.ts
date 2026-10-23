@@ -11,3 +11,14 @@ export type Candidate = {
   screenSizeIn: number;
   priceKurus: number;         
 };
+export type Profile = "student" | "software" | "gaming" | "creative";
+export type ScreenSize = "small" | "medium" | "large";
+ 
+// What the wizard hands to the engine.
+export type Answers = {
+  budgetKurus: number;
+  profiles: Profile[];
+  portability: "rarely" | "sometimes" | "daily";
+  screenSizes: ScreenSize[];                 // empty = any size
+  os: ("windows" | "macos" | "linux")[];     // empty = any OS
+};
