@@ -20,7 +20,7 @@ function makeCandidate(overrides: Partial<Candidate> = {}): Candidate {
     ...overrides,
   };
 }
- 
+
 function makeAnswers(overrides: Partial<Answers> = {}): Answers {
   return {
     budgetKurus: 3_000_000,
@@ -33,25 +33,25 @@ function makeAnswers(overrides: Partial<Answers> = {}): Answers {
 }
 
 test("price over budget and weight is in range", () => {
-    const c = makeCandidate({ priceKurus: 3_150_000})
-    assert.equal(penalty(c, makeAnswers()), 10);
+  const c = makeCandidate({ priceKurus: 3_150_000 })
+  assert.equal(penalty(c, makeAnswers()), 10);
 });
 
 test("price in budget and weight is out of range", () => {
-    const c = makeCandidate({priceKurus: 3_000_000,weightG: 2500})
-    assert.equal(penalty(c, makeAnswers({portability: "daily"})), 10);
+  const c = makeCandidate({ priceKurus: 3_000_000, weightG: 2500 })
+  assert.equal(penalty(c, makeAnswers({ portability: "daily" })), 10);
 });
 
 test("Suites both", () => {
-    const c = makeCandidate({priceKurus: 3_000_000,weightG: 1500})
-    assert.equal(penalty(c, makeAnswers()), 0);
+  const c = makeCandidate({ priceKurus: 3_000_000, weightG: 1500 })
+  assert.equal(penalty(c, makeAnswers()), 0);
 });
 
 test("portability = sometimes and weight is out of range", () => {
-    const c = makeCandidate({weightG: 2300});
-    assert.equal(penalty(c, makeAnswers({portability:"sometimes"})), 0)
+  const c = makeCandidate({ weightG: 2300 });
+  assert.equal(penalty(c, makeAnswers({ portability: "sometimes" })), 0)
 });
-test("portability is daily and weight is at maximum,in range,", () =>{
-    const c = makeCandidate({weightG: 2200});
-    assert.equal(penalty(c,makeAnswers({portability:"daily"})), 0)
+test("portability is daily and weight is at maximum,in range,", () => {
+  const c = makeCandidate({ weightG: 2200 });
+  assert.equal(penalty(c, makeAnswers({ portability: "daily" })), 0)
 });

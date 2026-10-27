@@ -30,11 +30,9 @@ export function explain(c: Candidate, sub: SubScores, w: Weights): Explanation {
   // Fields the user cares about (weight > 0) and that we have real data for.
   const keys = (Object.keys(w) as Key[]).filter((k) => w[k] > 0 && !SKIP.includes(k));
 
-  // TODO(human) 1: sort a copy of keys by contribution (sub[k] * w[k]), highest first
   const byContribution = [...keys].sort((a,b) => sub[b] * w[b] -  sub[a] * w[a]);
   const strengths = byContribution.slice(0, 2).map((k) => STRENGTH_TEXT[k]);
 
-  // TODO(human) 2: the key with the lowest sub score
   const weakest = [...keys].sort((a,b) => sub[a] - sub[b])[0];
   const weaknesses = [WEAKNESS_TEXT[weakest]];
 
