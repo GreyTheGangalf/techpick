@@ -40,6 +40,8 @@ Her çalışma oturumundan sonra buraya kısa bir not ekle: tarih, ne karar veri
 | 23 Eki | Alt skorlar | CPU = single ve multi ayrı normalize edilip ortalanır; taşınabilirlik = ağırlık (düşük iyi) ve pil ortalaması; ekran panel verisi olmadığı için herkese 100; fiyat/perf = (CPU+GPU)/2 ÷ fiyat. | Ölçekleri farklı değerler ham ortalanırsa büyük olan baskın çıkar. |
 | 23 Eki 2026 | Cezalar | Bütçe aşımı doğrusal: bütçede 0, %5 aşımda −10 puan. Günlük taşıyanda 2200 g üstü −10. Sayılar penalties.ts'te sabit. | Kullanıcı testlerinden sonra ayarlanacak. |
 | 27 Eki 2026 | Üç öneri | En iyi eşleşme = sıralamada ilk. Fiyat/perf. = kalanlar içinde value alt skoru en yüksek olan. Biraz daha öde = kalanlar içinde en iyi eşleşmeden pahalı olanların en yüksek puanlısı. Üçü farklı laptop; uygun aday yoksa kart gösterilmez. | Aynı ürün iki kartta görünmesin. |
+| 27 Eki 2026 | Çalışma şekli | Her TODO'dan önce: yapının kısa hatırlatması (Python karşılığıyla), farklı bir konudan örnek, sonra TODO. | Yapıyı unutmak TODO'ları zorlaştırıyordu. |
+| 27 Eki 2026 | Açıklama | Güçlü yön = katkısı (alt skor × ağırlık) en yüksek 2 alan. Zayıf yön = ağırlığı > 0 olan alanlar içinde alt skoru en düşük olan. Ekran, panel verisi gelene kadar atlanır. FreeDOS her zaman zayıf yön. | Her öneride zayıf yön kuralı; kullanıcının umursamadığı alan zayıf yön sayılmaz. |
 
 ## Açık işler
 
