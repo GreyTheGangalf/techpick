@@ -12,22 +12,22 @@ export function rankCandidates(answers: Answers, candidates: Candidate[]): Ranke
     const subs = subScores(eligible); // normalized within the eligible set only
     const weights = combineWeights(answers.profiles);
 
-const ranked = eligible.map((c, i) => ({
-    candidate: c,
-    sub: subs[i],
-    score: weightedScore(subs[i], weights) - penalty(c, answers),
-}));
+    const ranked = eligible.map((c, i) => ({
+        candidate: c,
+        sub: subs[i],
+        score: weightedScore(subs[i], weights) - penalty(c, answers),
+    }));
 
-ranked.sort((a, b) => b.score - a.score);
+    ranked.sort((a, b) => b.score - a.score);
 
-const seen = new Set<number>();
+    const seen = new Set<number>();
 
-return ranked.filter((r) => {
-    const family = r.candidate.familyId;
-    if (seen.has(family)) {
-        return false;        // this family already has a better candidate above
-    }
-seen.add(family);
-return true;
-});
+    return ranked.filter((r) => {
+        const family = r.candidate.familyId;
+        if (seen.has(family)) {
+            return false;        // this family already has a better candidate above
+        }
+        seen.add(family);
+        return true;
+    });
 }

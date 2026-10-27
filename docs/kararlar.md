@@ -39,6 +39,7 @@ Her çalışma oturumundan sonra buraya kısa bir not ekle: tarih, ne karar veri
 | 17 Eki 2026 | Kesin filtreler | fiyat×100 ≤ bütçe×105 (tam sayı), ekran grupları <15 / 15-16.9 / ≥17, FreeDOS Windows sayılır ve zayıf yön olarak söylenir. |
 | 23 Eki | Alt skorlar | CPU = single ve multi ayrı normalize edilip ortalanır; taşınabilirlik = ağırlık (düşük iyi) ve pil ortalaması; ekran panel verisi olmadığı için herkese 100; fiyat/perf = (CPU+GPU)/2 ÷ fiyat. | Ölçekleri farklı değerler ham ortalanırsa büyük olan baskın çıkar. |
 | 23 Eki 2026 | Cezalar | Bütçe aşımı doğrusal: bütçede 0, %5 aşımda −10 puan. Günlük taşıyanda 2200 g üstü −10. Sayılar penalties.ts'te sabit. | Kullanıcı testlerinden sonra ayarlanacak. |
+| 27 Eki 2026 | Üç öneri | En iyi eşleşme = sıralamada ilk. Fiyat/perf. = kalanlar içinde value alt skoru en yüksek olan. Biraz daha öde = kalanlar içinde en iyi eşleşmeden pahalı olanların en yüksek puanlısı. Üçü farklı laptop; uygun aday yoksa kart gösterilmez. | Aynı ürün iki kartta görünmesin. |
 
 ## Açık işler
 
