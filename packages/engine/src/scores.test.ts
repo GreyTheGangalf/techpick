@@ -22,7 +22,7 @@ function makeCandidate(overrides: Partial<Candidate> = {}): Candidate {
 }
 
 test("identical candidates score 100 everywhere", () => {
-    const[a, b] = subScores([makeCandidate(), makeCandidate({configurationId: 2})]);
+    const [a, b] = subScores([makeCandidate(), makeCandidate({ configurationId: 2 })]);
     assert.deepEqual(a, b);
     assert.equal(a.cpu, 100);
     assert.equal(a.portability, 100);
@@ -38,7 +38,7 @@ test("lighter laptop with a bigger battery wins portability", () => {
 });
 
 test("With the same hardware, the more affordable “Value” model comes out on top", () => {
-    const[a, b] = subScores([makeCandidate({priceKurus: 2_500_000}), makeCandidate({priceKurus: 3_500_000})]);
+    const [a, b] = subScores([makeCandidate({ priceKurus: 2_500_000 }), makeCandidate({ priceKurus: 3_500_000 })]);
     assert.equal(a.value, 100);
     assert.equal(b.value, 0);
 });
