@@ -43,6 +43,7 @@ Her çalışma oturumundan sonra buraya kısa bir not ekle: tarih, ne karar veri
 | 27 Eki 2026 | Sihirbaz kapsamı | MVP'de 5 soru: bütçe, kullanım, taşıma, ekran, işletim sistemi. "Oyunlar" sorusu yok, oyun profili yeterli. "Olmazsa olmazlar" sonraya kaldı. | Motorda karşılıkları ve OLED gibi veriler yok. |
 | 29 Eki 2026 | Elle fiyat | Cron'a kadar fiyatlar stores.csv ve offers.csv ile elle seed'lenir. Pazar yerinde satıcı seller_name'e yazılır; boş = mağazanın kendisi. Linklerden takip parametreleri silinir. | Sonuç sayfası fiyatsız çalışamaz. |
 | 29 Eki 2026 | Fiyat tazeliği | 48 saat kuralı MAX_OFFER_AGE_HOURS sabitiyle kodda durur, cron gelene kadar (6. hafta) uygulanmaz. | Elle girilen fiyatlar 2 günde düşerdi.
+| 29 Eki 2026 | DB bağlantısı (site) | Vercel transaction pooler (6543) ve prepare: false kullanır; lokal ve seed session pooler (5432) ile kalır. Site DATABASE_URL'i apps/web/.env.local'dan okur. | Serverless'ta her istek yeni bağlantı açar; 9 Eki kararını site için günceller. |
 
 ## Açık işler
 

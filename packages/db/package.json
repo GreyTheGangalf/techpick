@@ -2,6 +2,7 @@
   "name": "@techpick/db",
   "private": true,
   "type": "module",
+  "exports": { "./schema": "./src/schema.ts" },
   "scripts": {
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
