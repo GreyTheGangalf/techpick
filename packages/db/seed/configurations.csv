@@ -1,6 +1,6 @@
 brand,family,variant_name,mpn,os,cpu,gpu,gpu_tgp_w,ram_gb,storage_gb,weight_g,battery_wh,screen_size_in,source
 ASUS,TUF Gaming A16,FA608UMI,90NR0KV1-M00LF0,none,AMD Ryzen 7 260,NVIDIA GeForce RTX 5060,115,16,512,2200,70,16.0,https://shop.asus.com/tr/90nr0kv1-m00lf0-asus-tuf-gaming-a16-2025.html?config=90NR0KV1-M00LF0
-MSI,Katana 15 HX,B14WEK-682X,,none,Intel Core i9-14900HX,NVIDIA GeForce RTX 5050,115,32,1024,2400,75,15.6,https://tr.msi.com/Laptop/Katana-15-HX-B14WX/Specification
+MSI,Katana 17 HX,B14WFK-252X,,none,Intel Core i7-14650HX,NVIDIA GeForce RTX 5060,115,32,1024,2700,75,17.3,https://tr.msi.com/Laptop/Katana-17-HX-B14WX/Specification
 MSI,Thin A15,B7VE-076X,,none,AMD Ryzen 5 7535HS,NVIDIA GeForce RTX 4050,45,16,512,1860,52,15.6,https://tr.msi.com/Laptop/Thin-A15-B7VX/Specification
 HP,Victus 15,15-fb3039nt,BX9V0EA,windows,AMD Ryzen 7 7445HS,NVIDIA GeForce RTX 3050 6GB,75,16,512,2290,53,15.6,https://www.hp.com/tr-tr/products/laptops/product-details/product-specifications/2103157757
 HP,HyperX OMEN 15,GB0003NT,,windows,AMD Ryzen 5 240,NVIDIA GeForce RTX 5060,55,24,512,2420,70,15.3,https://www.hp.com/tr-tr/products/laptops/product-details/product-specifications/2103645486

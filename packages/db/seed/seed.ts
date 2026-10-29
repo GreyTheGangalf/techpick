@@ -1,8 +1,9 @@
 import { readFileSync } from "node:fs";
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { configurations, cpus, gpus, modelFamilies, osEnum } from "../src/schema.ts";
+import { configurations, cpus, gpus, modelFamilies, offers, osEnum, stores } from "../src/schema.ts";
+
 
 type Db = PostgresJsDatabase;
 type CsvRow = Record<string, string>;
@@ -63,7 +64,7 @@ async function seedGpus(db: Db) {
   const rows = readCsv("gpus.csv").map((r) => ({
     model: r.model,
     vendor: r.vendor,
-    timespyGraphics: toInt(r.timespy_graphics, "timespy_graphics"), 
+    timespyGraphics: toInt(r.timespy_graphics, "timespy_graphics"),
     timespyRefTgpW: toIntOrNull(r.timespy_ref_tgp_w, "timespy_ref_tgp_w"),
   }));
   await db
@@ -119,7 +120,7 @@ async function seedConfigurations(db: Db) {
   const gpuIds = toIdMap(await db.select({ id: gpus.id, key: gpus.model }).from(gpus));
 
   const rows = csv.map((r, i) => {
-    const line = i + 2; 
+    const line = i + 2;
     return {
       familyId: lookup(familyIds, `${r.brand}|${r.family}`, "family", line),
       cpuId: lookup(cpuIds, r.cpu, "cpu", line),
@@ -163,10 +164,73 @@ type Os = (typeof osEnum.enumValues)[number]
 function toOs(value: string, line: number): Os {
   const allowed: readonly string[] = osEnum.enumValues;
 
-  if(!allowed.includes(value)){
+  if (!allowed.includes(value)) {
     throw new Error(`configurations.csv line ${line}: os "${value}" must be one of ${allowed.join(", ")}`);
   }
   return value as Os;
+}
+
+function toBool(value: string, field: string): boolean {
+  if (value === "true") return true;
+  if (value === "false") return false;
+  throw new Error(`${field}: "${value}" must be true or false`);
+}
+
+async function seedStores(db: Db) {
+  const rows = readCsv("stores.csv").map((r) => ({
+    name: r.name,
+    url: r.url,
+    isTrusted: toBool(r.is_trusted, "is_trusted"),
+  }));
+
+  await db
+    .insert(stores)
+    .values(rows)
+    .onConflictDoUpdate({
+      target: stores.name,
+      set: { url: sql`excluded.url`, isTrusted: sql`excluded.is_trusted` },
+    });
+
+  console.log(`stores: ${rows.length} rows upserted`);
+}
+
+async function seedOffers(db: Db) {
+  const csv = readCsv("offers.csv");
+
+  const storeIds = toIdMap(await db.select({ id: stores.id, key: stores.name }).from(stores));
+  const configIds = toIdMap(
+    (await db
+      .select({ id: configurations.id, family: modelFamilies.name, variant: configurations.variantName })
+      .from(configurations)
+      .innerJoin(modelFamilies, eq(configurations.familyId, modelFamilies.id)))
+      .map((c) => ({ id: c.id, key: `${c.family}|${c.variant}` })),
+  );
+  const rows = csv.map((r, i) => {
+    const line = i + 2;
+    return {
+      configurationId: lookup(configIds, `${r.family}|${r.variant_name}`, "configuration", line),
+      storeId: lookup(storeIds, r.store, "store", line),
+      sellerName: r.sellerName,
+      priceKurus: toInt(r.price_kurus, "price_kurus"),
+      inStock: toBool(r.in_stock,"in_stock"),
+      url: r.url,
+    };
+  });
+
+  await db
+    .insert(offers)
+    .values(rows)
+    .onConflictDoUpdate({
+      target: [offers.configurationId, offers.storeId, offers.sellerName],
+      set: {
+        priceKurus: sql`excluded.price_kurus`,
+        inStock: sql`excluded.in_stock`,
+        url: sql`excluded.url`,
+        lastSeenAt: sql`now()`,
+      },
+    });
+
+  console.log(`offers: ${rows.length} rows upserted`);
 }
 
 const client = postgres(url);
@@ -175,6 +239,8 @@ try {
   await seedCpus(db);
   await seedGpus(db);
   await seedConfigurations(db);
+  await seedStores(db);
+  await seedOffers(db);
 } finally {
   await client.end();
 }
