@@ -1,5 +1,5 @@
 import { recommend } from "@techpick/engine";
-import { loadCandidates } from "@/lib/candidates";
+import { loadCandidates, loadCardDetails } from "@/lib/candidates";
 import { answersFromSearch } from "@/lib/answers-url";
 
 export const dynamic = "force-dynamic";
@@ -17,5 +17,8 @@ export default async function ResultPage({
         bestValue: result.bestValue?.ranked.candidate.configurationId ?? null,
         stepUp: result.stepUp?.ranked.candidate.configurationId ?? null,
     };
-    return <pre className="p-8">{JSON.stringify({ answers, ids }, null, 2)}</pre>;
+    const details = await loadCardDetails(
+        [ids.bestMatch, ids.bestValue, ids.stepUp].filter((id) => id !== null),
+    );
+    return <pre className="p-8">{JSON.stringify({ answers, ids, details: Object.fromEntries(details)}, null, 2)}</pre>;
 }
