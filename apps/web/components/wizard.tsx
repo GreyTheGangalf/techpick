@@ -5,9 +5,9 @@ import type { Answers, Profile, ScreenSize } from "@techpick/engine";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
-import { profile } from "console";
-import next from "next";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useRouter } from "next/navigation";
+import { answersToSearch } from "@/lib/answers-url";
 
 type Portability = Answers["portability"];  // "rarely" | "sometimes" | "daily"
 type Os = Answers["os"][number];            // "windows" | "macos" | "linux"
@@ -51,6 +51,7 @@ export function Wizard() {
     const [answers, setAnswers] = useState<Answers>(INITIAL);
     const [step, setStep] = useState(0);
     const budgetTl = answers.budgetKurus / 100;
+    const router = useRouter();
 
     const toggleProfile = (p: Profile) => {
         const next = answers.profiles.includes(p) ? answers.profiles.filter((x) => x !== p) : [...answers.profiles, p];
@@ -65,6 +66,7 @@ export function Wizard() {
         const next = answers.os.includes(o) ? answers.os.filter((x) => x !== o) : [...answers.os, o];
         setAnswers({ ...answers, os: next });
     };
+
 
     return (
         <section className="space-y-6">
@@ -153,9 +155,14 @@ export function Wizard() {
                 <Button variant="outline" disabled={step === 0} onClick={() => setStep(step - 1)}>
                     Geri
                 </Button>
-                <Button disabled={step === LAST_STEP} onClick={() => setStep(step + 1)}>
-                    İleri
-                </Button>
+                {step < LAST_STEP ? (
+                    <Button disabled={step === LAST_STEP} onClick={() => setStep(step + 1)}>
+                        İleri
+                    </Button>
+                ) : (
+                    <Button onClick={() => router.push(`/sonuc?${answersToSearch(answers)}`)}> Önerileri göster</Button>
+                )
+                }
             </div>
         </section>
     );
