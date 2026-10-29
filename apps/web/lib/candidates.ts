@@ -4,22 +4,31 @@ import postgres from "postgres";
 import { configurations, cpus, gpus, offers, stores } from "@techpick/db/schema";
 import type { Candidate } from "@techpick/engine";
 
-const url = process.env.DATABASE_URL;
-if (!url) {
-    throw new Error("DATABASE_URL is not set (apps/web/.env.local or Vercel env)");
-}
-const db = drizzle(postgres(url, { prepare: false }));
+let cached: ReturnType<typeof drizzle> | null = null;
 
-// Lowest in-stock price from a trusted store, per configuration.
-const bestPrice = db
-    .select({ configurationId: offers.configurationId, priceKurus: min(offers.priceKurus).as("price_kurus") })
-    .from(offers)
-    .innerJoin(stores, eq(offers.storeId, stores.id))
-    .where(and(eq(offers.inStock, true), eq(stores.isTrusted, true)))
-    .groupBy(offers.configurationId)
-    .as("best_price");
+// Connect on first use, not at import time, so `next build` doesn't need the database.
+function getDb() {
+    if (cached === null) {
+        const url = process.env.DATABASE_URL;
+        if (!url) {
+            throw new Error("DATABASE_URL is not set (apps/web/.env.local or Vercel env)");
+        }
+        cached = drizzle(postgres(url, { prepare: false }));
+    }
+    return cached;
+}
 
 export async function loadCandidates(): Promise<Candidate[]> {
+    const db = getDb();
+    // Lowest in-stock price from a trusted store, per configuration.
+    const bestPrice = db
+        .select({ configurationId: offers.configurationId, priceKurus: min(offers.priceKurus).as("price_kurus") })
+        .from(offers)
+        .innerJoin(stores, eq(offers.storeId, stores.id))
+        .where(and(eq(offers.inStock, true), eq(stores.isTrusted, true)))
+        .groupBy(offers.configurationId)
+        .as("best_price");
+        
     const rows = await db
         .select({
             configurationId: configurations.id,
@@ -39,6 +48,7 @@ export async function loadCandidates(): Promise<Candidate[]> {
             screenSizeIn: configurations.screenSizeIn,
             priceKurus: bestPrice.priceKurus,
         })
+
         .from(configurations)
         .innerJoin(cpus, eq(configurations.cpuId, cpus.id))
         .innerJoin(gpus, eq(configurations.gpuId, gpus.id))
