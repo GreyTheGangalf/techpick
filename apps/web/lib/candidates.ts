@@ -1,8 +1,9 @@
-import { and, eq, min } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { configurations, cpus, gpus, offers, stores } from "@techpick/db/schema";
+import { and, eq, inArray, min } from "drizzle-orm";
+import { configurations, cpus, gpus, modelFamilies, offers, stores } from "@techpick/db/schema";
 import type { Candidate } from "@techpick/engine";
+
 
 let cached: ReturnType<typeof drizzle> | null = null;
 
@@ -18,6 +19,44 @@ function getDb() {
     return cached;
 }
 
+export type CardDetails = { name: string; storeName: string; url: string; priceKurus: number };
+
+export async function loadCardDetails(ids: number[]): Promise<Map<number, CardDetails>> {
+    const details = new Map<number, CardDetails>();
+    if (ids.length === 0) return details; // no picks: don't hit the database
+
+    const db = getDb();
+    const rows = await db
+        .select({
+            configurationId: configurations.id,
+            brand: modelFamilies.brand,
+            family: modelFamilies.name,
+            variant: configurations.variantName,
+            storeName: stores.name,
+            url: offers.url,
+            price: offers.priceKurus,
+        })
+        .from(offers)
+        .innerJoin(stores, eq(offers.storeId, stores.id))
+        .innerJoin(configurations, eq(offers.configurationId, configurations.id))
+        .innerJoin(modelFamilies, eq(configurations.familyId, modelFamilies.id))
+        .where(and(inArray(offers.configurationId, ids), eq(offers.inStock, true), eq(stores.isTrusted, true)));
+
+    // One configuration can have several offers: keep the cheapest.
+    for (const r of rows) {
+        const current = details.get(r.configurationId);
+        if (current === undefined || r.price < current.priceKurus) {
+            details.set(r.configurationId, {
+                name: `${r.brand} ${r.family} ${r.variant}`,
+                storeName: r.storeName,
+                url: r.url,
+                priceKurus: r.price,
+            });
+        }
+    }
+    return details;
+}
+
 export async function loadCandidates(): Promise<Candidate[]> {
     const db = getDb();
     // Lowest in-stock price from a trusted store, per configuration.
@@ -28,7 +67,7 @@ export async function loadCandidates(): Promise<Candidate[]> {
         .where(and(eq(offers.inStock, true), eq(stores.isTrusted, true)))
         .groupBy(offers.configurationId)
         .as("best_price");
-        
+
     const rows = await db
         .select({
             configurationId: configurations.id,
