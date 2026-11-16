@@ -1,7 +1,7 @@
 family,variant_name,store,seller_name,price_kurus,in_stock,url
 TUF Gaming A16,FA608UMI,ASUS Shop,,8899900,true,https://shop.asus.com/tr/90nr0kv1-m00lf0-asus-tuf-gaming-a16-2025.html?config=90NR0KV1-M00LF0
 Katana 17 HX,B14WFK-252X,Hepsiburada,Nethouse,10599900,true,https://www.hepsiburada.com/msi-katana-17-hx-b14wfk-252xtr-oyun-bilgisayari-intel-core-i7-14650hx-32gb-ram-1tb-ssd-17-3-qhd-ekran-p-HBCV0000AI3AYQ?magaza=Nethouse
-Thin A15,B7VE-076X,Ensonu,,4813677,true,https://www.ensonu.com/urun/msi-thin-a15-b7ve-076xtr-ryzen-5-7535hs-16-gb-512-gb-ssd-rtx4050-15-6-full-hd-gaming-laptop/
+Thin A15,B7VE-076X,Trendyol,MAYTECH,5329500,true,https://www.trendyol.com/msi/thin-a15-b7ve-076xtr-r5-7535hs-16gb-ddr5-rtx4050-gddr6-6gb-512gb-ssd-15-6-fhd-144hz-dos-p-807703910?merchantId=203702
 Victus 15,15-fb3039nt,MediaMarkt,,5149900,true,https://www.mediamarkt.com.tr/tr/product/_hp-victus-gaming-15-fb3039nt-fhd-rtx3050-amd-ryzen-7-7445h-16-gb-ram-512-gb-ssd-156-inc-windows-11-home-laptop-siyah-181939669.html
 HyperX OMEN 15,GB0003NT,MediaMarkt,,8171900,true,https://www.mediamarkt.com.tr/tr/product/_hp-hyperx-omen-15-gb0003nt-geforce-rtx-5060-8-gb-gddr7-ddr5-amd-ryzen-5-240-24-gb-ram-512-gb-ssd-153-inc-windows-11-home-laptop-gri-184268776.html
 ROG Strix G16,G615JPR-RV300,MediaMarkt,,16649700,true,https://www.mediamarkt.com.tr/tr/product/_asus-rog-strix-g16-g615jpr-rv300-rtx5070ti-wuxga-intel-core-i7-14650hx-32-gb-ram-1-tb-ssd-16-inc-freedos-laptop-siyah-185947630.html
@@ -9,3 +9,42 @@ Cyborg 17,B13WFKG-092,Vatan Bilgisayar,,10301900,true,https://www.vatanbilgisaya
 Nitro V 15,ANV15-52,Trendyol,,4998411,true,https://www.trendyol.com/acer/nitro-v-15-anv15-52-i5-13420h-16gb-512gb-ssd-rtx5050-15-6-fhd-165hz-freedos-nh-qz7ey-001-p-1037351296?merchantId=968
 Vector 16 HX AI,A2XWHG-091,Gaming.gen.tr,,12125000,true,https://www.gaming.gen.tr/urun/600820/msi-vector-16-hx-ai-a2xwhg-091xtr-intel-core-ultra-7-255hx-geforce-rtx-5070-ti-12gb-140w-16gb-ddr5-1tb-ssd-16-inc-fhd-144hz-freedos-gaming-laptop/
 Stealth 18 HX,A2WI-081,Laptop.com.tr,,29730700,true,https://www.laptop.com.tr/urun/901435/msi-stealth-18-hx-a2wi-081tr-intel-core-ultra-9-290hx-plus-geforce-rtx-5080-16gb-150w-32gb-ddr5-2tb-ssd-18-inc-4k-uhd-120hz-w11-home-gaming-laptop/
+IdeaPad Slim 3i,15IRH10,Jebinde.com,,3199800,true,https://www.jebinde.com/detay/lenovo-ideapad-slim-3-15irh10-83k10016tr-i5-13420h-8-gb-512-gb-ssd-uhd-graphics-153-w11h-wuxga-notebook-92671
+IdeaPad 5 2-in-1,14IRH9,Jebinde.com,,4228700,true,https://www.jebinde.com/detay/lenovo-ideapad-5-14irh9-83kx003utr-i5-13420h-8-gb-512-gb-ssd-uhd-graphics-14-wuxga-notebook-91636
+Vivobook 15,X1504VA,Gaming.gen.tr,,2879900,true,https://www.gaming.gen.tr/urun/902397/asus-vivobook-15-x1504va-bq5386-intel-core-5-120u-8gb-ddr5-512gb-ssd-15-6-inc-full-hd-60hz-ips-level-freedos-laptop/
+Aspire Lite,AL15-32P-C0T1,Hepsiburada,,1999900,true,https://www.hepsiburada.com/acer-aspire-lite-intel-celeron-n4500-8gb-256gb-ssd-freedos-15-6-tasinabilir-bilgisayar-nx-dhfey-001-p-HBCV0000FX57Q2?magaza=Hepsiburada
+OmniBook 3,by0011nt,Hepsiburada,Tekno Dream,2600317,true,https://www.hepsiburada.com/hp-omnibook-3-amd-ryzen-5-7520u-8gb-512gb-ssd-freedos-16-tasinabilir-bilgisayar-dy0g7ea-p-HBCV0000GMU1QF?magaza=Tekno%20Dream
+Nirvana S100,S100.1342,Casper,,4548400,true,https://www.casper.com.tr/casper-nirvana-s100-1342-be00x-g-f-i5-13420h-16gb-ddr5-ram-500gb-m2-freedos-dizustu-bilgisayar-p-188-9894542 
+NevoPro P40,NP40.210H,MediaMarkt,,4999900,true,https://www.mediamarkt.com.tr/tr/product/_casper-np40210h-be00a-g-fintel-core-5-210h16-gb-ram500-gb-ssd14w11-laptop-buz-grisi-1256696.html
+Abra A5,V21.5.7,Monster,,4929900,false,https://www.monsternotebook.com.tr/abra/monster-abra-a5-v21-5-7/
+Excalibur,G870.1362,MediaMarkt,,5699900,true,https://www.mediamarkt.com.tr/tr/product/_casper-g8701362-aej0a-c-intel-core-i7-13620h-islemci-12-gb-ram-480-gb-ssd-rtx3050-ekran-karti-excalibur-oyun-laptop-1251918.html
+Vivobook S14,S5452MA,MediaMarkt,,5599900,true,https://www.mediamarkt.com.tr/tr/product/_asus-vivobook-s14-s5452ma-tm215wintel-core-7-350-islemci16-gb-ram512-gb-ssd14w11-laptop-1257299.html
+TUF Gaming F16,FX607VJB,Trendyol,Asus Store Türkiye,5499900,true,https://www.trendyol.com/asus/tuf-gaming-f16-fx607vjb-rl135-core-5-210h-16gb-ram-512gb-ssd-6gb-rtx3050-16-fhd-144hz-p-1137336576?merchantId=118725
+Zenbook S14,UX5406AA,Hepsiburada,Asus Store Türkiye,9399900,true,https://www.hepsiburada.com/asus-zenbook-s14-ux5406aa-sw530w-ultra-7-355-16gb-ram-512gb-ssd-14-3k-oled-120hz-w11h-p-HBCV0000J05BZZ?magaza=Asus%20Store%20T%C3%BCrkiye
+Modern 16S AI+,G3MG-049,Hepsiburada,VATAN BILGISAYAR,8762900,true,https://www.hepsiburada.com/msi-modern-16s-ai-3-nesil-core-ultra-7-355-16gb-1tb-ssd-16inc-w11-p-HBCV0000GGDX4D?magaza=VATAN%20B%C4%B0LG%C4%B0SAYAR
+Aspire Go 16,AG16-71P-57D2,Vatan Bilgisayar,,2799900,true,https://www.vatanbilgisayar.com/acer-aspire-go-16-1-nesil-core-5-120u-8gb-512gb-ssd-16inc-w11.html
+Nirvana X600,X600.7430,Amazon,VATAN BILGISAYAR,2999900,true,https://www.amazon.com.tr/dp/B0GP8FK6BT
+Vivobook 16,X1607QA,Vatan Bilgisayar,,3199900,true,https://www.vatanbilgisayar.com/asus-vivobook-16-snapdragon-x-x1-26-100-8gb-256gb-ssd-16inc-w11.html
+Nirvana X100,X100.320U,Casper,,5019800,true,https://www.casper.com.tr/casper-nirvana-x100-320u-ae00a-g-f-intel-5-320-500gb-m2-win11-home-15-6-fhd-ips-dizustu-bilgisayar-p-221-10326976
+Nirvana Z100,Z100.1335,Casper,,4470200,true,https://www.casper.com.tr/casper-nirvana-z100-1335-bq00x-m-q-i5-1335u-16gb-lpddr5-ram-1tb-m2-freedos-14-0-qhd-notebook-p-153-9863697
+Cyborg 15,C13WEO-285X,Vatan Bilgisayar,,7056900,true,https://www.vatanbilgisayar.com/msi-cyborg-15-13-nesil-core-i5-13420h-rtx5050-8gb-16gb-512gb-ssd-15-6inc-freedos.html
+Vivobook S16,S3607AA,Trendyol,,6509469,true,https://www.trendyol.com/asus/vivobook-s16-s3607aa-sh189w-core-ultra-7-355-16gb-ddr5-512gb-ssd-16-oled-win11-p-1175494111?merchantId=968
+Prestige 16 AI+,C3MG-039,incehesap,,12699900,true,https://www.incehesap.com/msi-prestige-16-ai-c3mg-039tr-core-ultra-9-386h-32gb-1tb-ssd-16-0-2-8k-qhd-oled-120hz-windows-11-home-notebook-fiyati-87585/
+Abra A5,V21.6.7,Teknosa,,4199900,true,https://www.teknosa.com/monster-abra-a5-v2167-intel-core-i5-13420h-8-gb-ram-500-gb-ssd-4-gb-rtx-3050-windows-11-home-156-144-hz-oyun-bilgisayari-p-785395868?shopId=teknosa
+Slayer,X5T-5050,Game Garaj,,7699920,true,https://www.gamegaraj.com/laptop/game-garaj-slayer-x5t-5050-intel-core-i5-13500hx-rtx5050/
+Abra A7,V15.5.6,Monster,,6649900,true,https://www.monsternotebook.com.tr/abra/monster-abra-a7-v15-5-6/
+Huma H5,V5.1.5,Monster,,8799900,true,https://www.monsternotebook.com.tr/huma/monster-huma-h5-v5-1-5/
+Huma H7,V1.1.3,Monster,,7299900,true,https://www.monsternotebook.com.tr/huma/monster-huma-h7-v1-1-3/
+Slayer,X7T-5060,Game Garaj,,9049920,true,https://www.gamegaraj.com/laptop/game-garaj-slayer-x7t-5060-intel-core-i7-14650hx-rtx5060/
+Tulpar T6,V3.3,Monster,,9999900,true,https://www.monsternotebook.com.tr/tulpar/monster-tulpar-t6-v3-3/
+Titan 18 HX Dragon Edition Draco Epic,A2WJ-1223,Amazon,incehesap,55095900,true,https://www.amazon.com.tr/dp/B0H76488PB
+ThinkBook,16p Gen 6,Amazon,Nethouse,10249900,true,https://www.amazon.com.tr/dp/B0FVT9HZXT
+Yoga 7,14AKP10,MediaMarkt,,8499900,true,https://www.mediamarkt.com.tr/tr/product/_lenovo-yoga-7-2-in-1amd-ryzen-ai-7-350-islemci16-gb-ram1-tb-ssd14-oledw11laptop-83jr00aetr-1254767.html
+LOQ,15IRX10,Teknosa,,8999900,true,https://www.teknosa.com/lenovo-loq-15irx10-i7-13645hx-16gb-ram-1tb-ssd-rtx5060-8gb-156fhd-w11-83je01bdtr-gaming-notebook-p-100000063977?shopId=teknosa
+V15,G6 ARP,incehesap,,4299900,true,https://www.incehesap.com/lenovo-v15-g6-83v40026tx-ryzen-7-170-16gb-512gb-ssd-15-6-fhd-freedos-notebook-fiyati-92672/
+Legion Pro 5,ADR10,Amazon,Nethouse,12899900,true,https://www.amazon.com.tr/dp/B0FXXGNTK3
+Nitro V 16,ANV16-72-72B9,Vatan Bilgisayar,,9299900,true,https://www.vatanbilgisayar.com/acer-nitro-v-16-2-nesil-core-7-240h-rtx5070-8gb-16gb-1tb-ssd-16inc-freedos.html
+EliteBook 8, G1i 16 AI,Trendyol,Hp Store Türkiye,12369900,true,https://www.trendyol.com/hp/elitebook-8-g1i-ad3t0et-u7-255h-32gb-1tb-ssd-16-w11pro-p-1041171225?merchantId=467452
+Predator Helios,NEO 14 AI,Vatan Bilgisayar,,8949900,true,https://www.vatanbilgisayar.com/acer-predator-2-nesil-core-ultra-7-255h-rtx5060-8gb-16gb-1tb-ssd-14-5inc-freedos.html
+HyperX OMEN 16,AP1018NT,Hepsiburada,Hp Store Türkiye,8719900,true,https://www.hepsiburada.com/hp-hyperx-omen-16-amd-ryzen-7-8745hx-24gb-512gb-ssd-rtx5060-16-165hz-freedos-tasinabilir-bilgisayar-d9cu4ea-p-HBCV0000JKY0OY?magaza=HP%20Store%20T%C3%BCrkiye
+OmniBook X Flip 14,kb0001nt,Trendyol,Hp Store Türkiye,12499900,true,https://www.trendyol.com/hp/omnibook-x-flip-14-kb0001nt-d62bhea-intel-core-ultra-7-356h-32gb-ram-1tb-ssd-14-wuxga-dokunmatik-win11-home-gri-p-1142060334?merchantId=467452
