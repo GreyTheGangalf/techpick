@@ -45,8 +45,12 @@ Her çalışma oturumundan sonra buraya kısa bir not ekle: tarih, ne karar veri
 | 29 Eki 2026 | Fiyat tazeliği | 48 saat kuralı MAX_OFFER_AGE_HOURS sabitiyle kodda durur, cron gelene kadar (6. hafta) uygulanmaz. | Elle girilen fiyatlar 2 günde düşerdi.
 | 29 Eki 2026 | DB bağlantısı (site) | Vercel transaction pooler (6543) ve prepare: false kullanır; lokal ve seed session pooler (5432) ile kalır. Site DATABASE_URL'i apps/web/.env.local'dan okur. | Serverless'ta her istek yeni bağlantı açar; 9 Eki kararını site için günceller. |
 | 29 Eki 2026 | Sonuç kartı | Ad, mağaza ve link motora girmez; recommend sonrası seçilen ≤3 id için ayrı sorguyla gelir. Kartta CPU, GPU ve RAM gösterilir. Boş sonuçta bütçeyi/seçimleri genişletme önerisi. | Motor mağazadan bağımsız kalır; aday sayısı büyüse de sorgu küçük kalır. |
-| 16 Kas: 15-35k bandında güvenilir mağazada yeni ürün az; veri 35k+ ağırlıklı kalacak. 30k altı için 5 model yeterli. | 
-| 16 Kas: İlk 49 konfigürasyon girildi. 15-35k bandında güvenilir mağazada yeni ürün az, veri 35k+ ağırlıklı kalacak. Sihirbazın varsayılan bütçesi 30.000 TL’de kalıyor. |
+| 16 Kas 2026 | İlk veri | İlk 49 konfigürasyon girildi. 15-35k bandında güvenilir mağazada yeni ürün az, veri 35k+ ağırlıklı kalacak. Sihirbazın varsayılan bütçesi 30.000 TL. | 30k altı için 5 model yeterli. |
+| 17 Kas 2026 | Kullanıcı verisi | Kullanıcıya ait veya kişiyi tanımlayan hiçbir veri tutulmaz: hesap, IP ve kullanıcı/oturum kimliği yok. click_events sadece konfigürasyon, mağaza ve zaman. Analitik çerezsiz. | KVKK yükünü sıfıra yakın tutmak. |
+| 17 Kas 2026 | UI | Görsel katman (stil, bileşen düzeni) Claude’a yazdırılır; veri akışı (sorgular, server component, prop tipleri) benim. CLAUDE.md’ye istisna olarak eklenir. | Öğrenme hedefi motor ve veri; UI’da yaratıcılık koddan önemli. |
+| 17 Kas 2026 | Fiyat cron’u | GitHub Actions ile günde 2 kez, JSON-LD’den okunur. Hata durumunda teklife dokunulmaz (checked_at güncellenmez), 48 saat kuralı eler. Amazon manuel. | Bayat fiyatı taze göstermemek; kazıma yasağı. |
+| 18 Kas 2026 | Fiyat ayrıştırma | Fiyat string'inde hem `.` hem `,` varsa en sağdaki ondalıktır; tek ayırıcı tekrar ediyorsa ya da ardından tam 3 rakam geliyorsa binliktir. Hesap Decimal ile yapılır, sonuç kuruş (int) olarak döner; ayrıştırılamayan değer None olur, cron çökmez. | Mağazalar Türkçe ve İngilizce biçimi karışık kullanıyor; "noktaları/virgülleri sil" kuralı 42999.5'i bozuyordu. |
+| 18 Kas 2026 | JSON-LD offer | offers listesinde ilk offer alınır; availability yoksa stokta değil sayılır; para birimi TRY değilse offer okunmaz. | Öne çıkan satıcı ilk sırada; stokta olmayanı önermek gizlemekten kötü. |
 
 ## Açık işler
 

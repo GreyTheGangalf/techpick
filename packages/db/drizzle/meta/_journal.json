@@ -22,6 +22,13 @@
       "when": 1791893520746,
       "tag": "0002_omniscient_secret_warriors",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1793432991920,
+      "tag": "0003_cooing_corsair",
+      "breakpoints": true
     }
   ]
 }

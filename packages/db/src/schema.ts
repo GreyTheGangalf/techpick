@@ -1,5 +1,6 @@
 import { pgTable, pgEnum, integer, text, numeric, boolean, timestamp, unique } from "drizzle-orm/pg-core";
 export const osEnum = pgEnum("os", ["windows", "macos", "linux", "none"]);
+export const panelEnum = pgEnum("panel", ["ips", "oled", "va", "tn"]);
 
 export const modelFamilies = pgTable(
     "model_families",
@@ -27,6 +28,10 @@ export const configurations = pgTable("configurations",
     weightG: integer("weight_g").notNull(),
     batteryWh: integer("battery_wh").notNull(),
     screenSizeIn: numeric("screen_size_in", { precision: 3, scale: 1, mode: "number" }).notNull(),
+    panel: panelEnum("panel"),
+    resolutionW: integer("resolution_w"),
+    resolutionH: integer("resolution_h"),
+    refreshHz: integer("refresh_hz"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 },
 // ADDED: the same variant cannot be entered twice in one family

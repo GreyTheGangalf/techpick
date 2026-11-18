@@ -1,6 +1,6 @@
 import pytest
 
-from jsonld import extract_jsonld, find_product, read_offer, ParsedOffer
+from jsonld import extract_jsonld, find_product, read_offer, ParsedOffer, parse_jsonld
 
 TAG = "script"
 
@@ -27,6 +27,7 @@ def test_extracts_objects_and_skips_broken_blocks():
 def test_page_without_jsonld_returns_empty_list():
     assert extract_jsonld("<html></html>") == []
 
+
 @pytest.mark.parametrize(
     "items",
     [
@@ -42,13 +43,34 @@ def test_find_product(items):
 def test_find_product_returns_none_without_product():
     assert find_product([{"@type": "Organization"}]) is None
 
+
 @pytest.mark.parametrize(
     "offers, expected",
     [
-        ({"price": "42999.00", "priceCurrency": "TRY", "availability": "https://schema.org/InStock"}, ParsedOffer(4299900, True)),
-        ({"price": 42999, "availability": "http://schema.org/OutOfStock"}, ParsedOffer(4299900, False)),
-        ([{"price": "41.500,00", "availability": "InStock"}, {"price": "45000"}], ParsedOffer(4150000, True)),
-        ({"@type": "AggregateOffer", "lowPrice": "39999", "availability": "https://schema.org/InStock"}, ParsedOffer(3999900, True)),
+        (
+            {
+                "price": "42999.00",
+                "priceCurrency": "TRY",
+                "availability": "https://schema.org/InStock",
+            },
+            ParsedOffer(4299900, True),
+        ),
+        (
+            {"price": 42999, "availability": "http://schema.org/OutOfStock"},
+            ParsedOffer(4299900, False),
+        ),
+        (
+            [{"price": "41.500,00", "availability": "InStock"}, {"price": "45000"}],
+            ParsedOffer(4150000, True),
+        ),
+        (
+            {
+                "@type": "AggregateOffer",
+                "lowPrice": "39999",
+                "availability": "https://schema.org/InStock",
+            },
+            ParsedOffer(3999900, True),
+        ),
         ({"price": "42999"}, ParsedOffer(4299900, False)),
     ],
 )
@@ -67,3 +89,21 @@ def test_read_offer(offers, expected):
 )
 def test_read_offer_returns_none(product):
     assert read_offer(product) is None
+
+
+def test_parse_jsonld_end_to_end():
+    html = (
+        "<html><head>"
+        + tag('{"@type": "BreadcrumbList"}')
+        + tag(
+            '{"@graph": [{"@type": "Product", "name": "Laptop", '
+            '"offers": {"price": "42.999,00", "priceCurrency": "TRY", '
+            '"availability": "https://schema.org/InStock"}}]}'
+        )
+        + "</head></html>"
+    )
+    assert parse_jsonld(html) == ParsedOffer(4299900, True)
+
+
+def test_parse_jsonld_without_product_returns_none():
+    assert parse_jsonld("<html>" + tag('{"@type": "Organization"}') + "</html>") is None

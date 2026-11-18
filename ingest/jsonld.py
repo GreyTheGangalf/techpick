@@ -60,3 +60,10 @@ def read_offer(product: dict) -> ParsedOffer | None:
     availability = str(offer.get("availability", ""))
     in_stock = availability.rsplit("/", 1)[-1] in IN_STOCK
     return ParsedOffer(price, in_stock)
+
+def parse_jsonld(html: str) -> ParsedOffer | None:
+    """Page HTML -> price and stock from its JSON-LD Product, or None if not found."""
+    product = find_product(extract_jsonld(html))
+    if product is None:
+        return None
+    return read_offer(product)
