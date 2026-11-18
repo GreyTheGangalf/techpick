@@ -51,6 +51,9 @@ Her çalışma oturumundan sonra buraya kısa bir not ekle: tarih, ne karar veri
 | 17 Kas 2026 | Fiyat cron’u | GitHub Actions ile günde 2 kez, JSON-LD’den okunur. Hata durumunda teklife dokunulmaz (checked_at güncellenmez), 48 saat kuralı eler. Amazon manuel. | Bayat fiyatı taze göstermemek; kazıma yasağı. |
 | 18 Kas 2026 | Fiyat ayrıştırma | Fiyat string'inde hem `.` hem `,` varsa en sağdaki ondalıktır; tek ayırıcı tekrar ediyorsa ya da ardından tam 3 rakam geliyorsa binliktir. Hesap Decimal ile yapılır, sonuç kuruş (int) olarak döner; ayrıştırılamayan değer None olur, cron çökmez. | Mağazalar Türkçe ve İngilizce biçimi karışık kullanıyor; "noktaları/virgülleri sil" kuralı 42999.5'i bozuyordu. |
 | 18 Kas 2026 | JSON-LD offer | offers listesinde ilk offer alınır; availability yoksa stokta değil sayılır; para birimi TRY değilse offer okunmaz. | Öne çıkan satıcı ilk sırada; stokta olmayanı önermek gizlemekten kötü. |
+| 18 Kas 2026 | Cron şeması | offers.last_seen_at = son başarılı fiyat kontrolü (checked_at diye ayrı sütun yok). stores.fetch_method enum ('jsonld' / 'manual'), varsayılan 'manual'. price_history yalnızca fiyat değişince yazılır; offer silinemez. | Yeni mağaza açıkça işaretlenmeden taranmaz; geçmiş yanlışlıkla gitmez. |
+| 18 Kas 2026 | Stok geçmişi | Tutulmaz; güncel stok offers.in_stock'ta. | MVP'de okuyan özellik yok. |
+| 18 Kas 2026 | Manual offer tazeliği | Manual mağazalar da 48 saat kuralına uyar; fiyat elle doğrulanıp seed'lenince last_seen_at yenilenir. jsonld mağazaların fiyat ve last_seen_at alanlarının sahibi cron'dur, seed onlara dokunmaz. | Tek kural; yanlış fiyat fiyatsızlıktan kötü. |
 
 ## Açık işler
 

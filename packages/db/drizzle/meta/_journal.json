@@ -29,6 +29,13 @@
       "when": 1793432991920,
       "tag": "0003_cooing_corsair",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1795027368718,
+      "tag": "0004_blue_richard_fisk",
+      "breakpoints": true
     }
   ]
 }
