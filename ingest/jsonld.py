@@ -24,6 +24,8 @@ def find_product(items: list[dict]) -> dict | None:
     while queue:
         item = queue.pop(0)
         graph = item.get("@graph")
+        if isinstance(graph, dict):
+            graph = [graph]
         if isinstance(graph, list):
             queue.extend(g for g in graph if isinstance(g, dict))
         if _has_type(item, "Product"):

@@ -34,6 +34,7 @@ def test_page_without_jsonld_returns_empty_list():
         [{"@type": "BreadcrumbList"}, {"@type": "Product", "name": "Laptop"}],
         [{"@type": ["Product", "Thing"], "name": "Laptop"}],
         [{"@graph": [{"@type": "WebPage"}, {"@type": "Product", "name": "Laptop"}]}],
+        [{"@type": "WebPage", "@graph": {"@type": "Product", "name": "Laptop"}}],
     ],
 )
 def test_find_product(items):
@@ -72,6 +73,7 @@ def test_find_product_returns_none_without_product():
             ParsedOffer(3999900, True),
         ),
         ({"price": "42999"}, ParsedOffer(4299900, False)),
+        ({"price": 76999.20, "availability": "https://schema.org/InStock"}, ParsedOffer(7699920, True)),
     ],
 )
 def test_read_offer(offers, expected):
