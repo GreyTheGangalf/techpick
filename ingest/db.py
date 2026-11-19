@@ -32,7 +32,8 @@ def update_offer(conn: psycopg.Connection, offer_id: int, parsed: ParsedOffer) -
             (offer_id, parsed.price_kurus),
         )
         return True
-    
+
+
 def load_targets(conn: psycopg.Connection) -> list[tuple[int, str, str]]:
     """Return (offer_id, url, store_name) for every offer in a jsonld store."""
     return conn.execute(
