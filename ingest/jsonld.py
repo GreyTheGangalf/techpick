@@ -18,16 +18,20 @@ def extract_jsonld(html: str) -> list[dict]:
     return items
 
 
+NESTED_KEYS = ("@graph", "object")  # where stores nest the main Product
+
+
 def find_product(items: list[dict]) -> dict | None:
-    """Return the first object whose @type includes Product, looking inside @graph too."""
+    """Return the first object whose @type includes Product, also looking inside NESTED_KEYS."""
     queue = list(items)
     while queue:
         item = queue.pop(0)
-        graph = item.get("@graph")
-        if isinstance(graph, dict):
-            graph = [graph]
-        if isinstance(graph, list):
-            queue.extend(g for g in graph if isinstance(g, dict))
+        for key in NESTED_KEYS:
+            nested = item.get(key)
+            if isinstance(nested, dict):
+                nested = [nested]
+            if isinstance(nested, list):
+                queue.extend(n for n in nested if isinstance(n, dict))
         if _has_type(item, "Product"):
             return item
     return None
@@ -38,6 +42,7 @@ def _has_type(item: dict, wanted: str) -> bool:
     if isinstance(types, str):
         types = [types]
     return isinstance(types, list) and wanted in types
+
 
 IN_STOCK = {"InStock", "LimitedAvailability", "OnlineOnly"}
 
@@ -62,6 +67,7 @@ def read_offer(product: dict) -> ParsedOffer | None:
     availability = str(offer.get("availability", ""))
     in_stock = availability.rsplit("/", 1)[-1] in IN_STOCK
     return ParsedOffer(price, in_stock)
+
 
 def parse_jsonld(html: str) -> ParsedOffer | None:
     """Page HTML -> price and stock from its JSON-LD Product, or None if not found."""

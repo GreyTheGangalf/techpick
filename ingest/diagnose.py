@@ -1,3 +1,6 @@
+# Debug helper: show which layer fails for one URL. Not used by the cron.
+
+import json
 import sys
 
 import requests
@@ -14,6 +17,8 @@ r = requests.get(
 print("1) status:", r.status_code, "| bytes:", len(r.text))
 items = extract_jsonld(r.text)
 print("2) jsonld types:", [i.get("@type") for i in items])
+for i in items:
+    print("   ", json.dumps(i, ensure_ascii=False)[:800])
 product = find_product(items)
 print("3) product found:", product is not None)
 if product:

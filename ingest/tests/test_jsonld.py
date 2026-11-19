@@ -35,6 +35,7 @@ def test_page_without_jsonld_returns_empty_list():
         [{"@type": ["Product", "Thing"], "name": "Laptop"}],
         [{"@graph": [{"@type": "WebPage"}, {"@type": "Product", "name": "Laptop"}]}],
         [{"@type": "WebPage", "@graph": {"@type": "Product", "name": "Laptop"}}],
+        [{"@type": "BuyAction", "object": {"@type": "Product", "name": "Laptop"}}],  # MediaMarkt
     ],
 )
 def test_find_product(items):
@@ -109,3 +110,8 @@ def test_parse_jsonld_end_to_end():
 
 def test_parse_jsonld_without_product_returns_none():
     assert parse_jsonld("<html>" + tag('{"@type": "Organization"}') + "</html>") is None
+
+
+def test_find_product_ignores_related_products():
+    items = [{"@type": "WebPage", "isRelatedTo": {"@type": "Product", "name": "Other"}}]
+    assert find_product(items) is None
