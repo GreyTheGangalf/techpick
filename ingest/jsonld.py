@@ -50,6 +50,7 @@ IN_STOCK = {"InStock", "LimitedAvailability", "OnlineOnly"}
 class ParsedOffer(NamedTuple):
     price_kurus: int
     in_stock: bool
+    seller: str | None = None
 
 
 def read_offer(product: dict) -> ParsedOffer | None:
@@ -66,8 +67,16 @@ def read_offer(product: dict) -> ParsedOffer | None:
         return None
     availability = str(offer.get("availability", ""))
     in_stock = availability.rsplit("/", 1)[-1] in IN_STOCK
-    return ParsedOffer(price, in_stock)
+    seller = offer.get("seller")
+    seller_name = seller.get("name") if isinstance(seller, dict) else None
+    return ParsedOffer(price, in_stock, seller_name)
 
+def seller_matches(expected: str, store_name: str, page_seller: str | None) -> bool:
+    """True if the page's seller is the one our offer row belongs to."""
+    if page_seller is None:
+        return True
+    wanted = expected or store_name
+    return wanted.strip().casefold() == page_seller.strip().casefold()
 
 def parse_jsonld(html: str) -> ParsedOffer | None:
     """Page HTML -> price and stock from its JSON-LD Product, or None if not found."""

@@ -1,6 +1,6 @@
 import pytest
 
-from jsonld import extract_jsonld, find_product, read_offer, ParsedOffer, parse_jsonld
+from jsonld import extract_jsonld, find_product, read_offer, ParsedOffer, parse_jsonld, seller_matches
 
 TAG = "script"
 
@@ -35,7 +35,9 @@ def test_page_without_jsonld_returns_empty_list():
         [{"@type": ["Product", "Thing"], "name": "Laptop"}],
         [{"@graph": [{"@type": "WebPage"}, {"@type": "Product", "name": "Laptop"}]}],
         [{"@type": "WebPage", "@graph": {"@type": "Product", "name": "Laptop"}}],
-        [{"@type": "BuyAction", "object": {"@type": "Product", "name": "Laptop"}}],  # MediaMarkt
+        [
+            {"@type": "BuyAction", "object": {"@type": "Product", "name": "Laptop"}}
+        ],  # MediaMarkt
     ],
 )
 def test_find_product(items):
@@ -74,7 +76,10 @@ def test_find_product_returns_none_without_product():
             ParsedOffer(3999900, True),
         ),
         ({"price": "42999"}, ParsedOffer(4299900, False)),
-        ({"price": 76999.20, "availability": "https://schema.org/InStock"}, ParsedOffer(7699920, True)),
+        (
+            {"price": 76999.20, "availability": "https://schema.org/InStock"},
+            ParsedOffer(7699920, True),
+        ),
     ],
 )
 def test_read_offer(offers, expected):
@@ -115,3 +120,33 @@ def test_parse_jsonld_without_product_returns_none():
 def test_find_product_ignores_related_products():
     items = [{"@type": "WebPage", "isRelatedTo": {"@type": "Product", "name": "Other"}}]
     assert find_product(items) is None
+
+
+def test_read_offer_reads_seller():
+    product = {
+        "offers": {
+            "price": 51499,
+            "availability": "InStock",
+            "seller": {"@type": "Organization", "name": "TNG Bilişim"},
+        }
+    }
+    assert read_offer(product) == ParsedOffer(5149900, True, "TNG Bilişim")
+
+
+@pytest.mark.parametrize(
+    "expected, store, page_seller, result",
+    [
+        (
+            "",
+            "MediaMarkt",
+            "TNG Bilişim",
+            False,
+        ),  # marketplace seller, we expected the store
+        ("", "Teknosa", "TEKNOSA", True),  # empty = the store itself, case-insensitive
+        ("MAYTECH", "Trendyol", " Maytech ", True),  # spaces and case ignored
+        ("MAYTECH", "Trendyol", "Başka Satıcı", False),
+        ("", "Game Garaj", None, True),  # page has no seller -> accept
+    ],
+)
+def test_seller_matches(expected, store, page_seller, result):
+    assert seller_matches(expected, store, page_seller) is result
