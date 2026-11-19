@@ -1,6 +1,6 @@
 name,url,is_trusted,fetch_method
 ASUS Shop,https://shop.asus.com/tr,true,manual
-Hepsiburada,https://www.hepsiburada.com,true,jsonld
+Hepsiburada,https://www.hepsiburada.com,true,manual
 Ensonu,https://www.ensonu.com,true,manual
 MediaMarkt,https://www.mediamarkt.com.tr,true,jsonld
 Vatan Bilgisayar,https://www.vatanbilgisayar.com,true,manual
@@ -10,7 +10,7 @@ Laptop.com.tr,https://www.laptop.com.tr,true,manual
 Jebinde.com,https://www.jebinde.com/,true,manual
 Casper,https://www.casper.com.tr/,true,manual
 Monster,https://www.monsternotebook.com.tr/,true,manual
-incehesap,https://www.incehesap.com/,true,jsonld
-Teknosa,https://www.teknosa.com/,true,jsonld
+incehesap,https://www.incehesap.com/,true,manual
+Teknosa,https://www.teknosa.com/,true,manual
 Game Garaj,https://www.gamegaraj.com/,true,jsonld
 Amazon,https://www.amazon.com.tr/,true,manual
