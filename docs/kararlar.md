@@ -56,6 +56,7 @@ Her çalışma oturumundan sonra buraya kısa bir not ekle: tarih, ne karar veri
 | 18 Kas 2026 | Manual offer tazeliği | Manual mağazalar da 48 saat kuralına uyar; fiyat elle doğrulanıp seed'lenince last_seen_at yenilenir. jsonld mağazaların fiyat ve last_seen_at alanlarının sahibi cron'dur, seed onlara dokunmaz. | Tek kural; yanlış fiyat fiyatsızlıktan kötü. |
 | 18 Kas 2026 | Tarihçe başlangıcı | Offer'ın price_history'si boşsa cron ilk fiyatı başlangıç satırı olarak yazar; sonra yalnızca fiyat değişince yazılır. | "Bu fiyat ne zamandan beri böyle" sorusu ilk günden cevaplanabilsin. |
 | 19 Kas 2026 | 403 veren mağazalar | Hepsiburada, Teknosa ve incehesap bot isteklerine 403 dönüyor; manual'a alındı. Tarayıcı taklidi yapılmaz; affiliate feed gelince cron'a dönerler. | Ürün kartı: fiyat yalnızca izin verilen kaynaklardan. |
+| 20 Kas 2026 | Satıcı kontrolü | Cron sayfadaki satıcıyı offer'ın seller_name'iyle karşılaştırır (boş = mağazanın kendisi, harf duyarsız); uyuşmazsa offer'a dokunmaz. Yanlış girilmiş offer satırları elle silinebilir, eskiyenler silinmez. | Pazar yerinde öne çıkan satıcı değişince başka satıcının fiyatı yazılmasın. |
 
 ## Açık işler
 
