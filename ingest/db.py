@@ -45,3 +45,26 @@ def load_targets(conn: psycopg.Connection) -> list[tuple[int, str, str, str]]:
         ORDER BY s.name, o.id
         """
     ).fetchall()
+
+
+def load_due_manual(
+    conn: psycopg.Connection, in_stock_days: int, out_of_stock_days: int
+) -> list[tuple]:
+    """Manual-store offers due for a check, oldest first.
+    Out-of-stock offers are already hidden, so they are checked less often."""
+    return conn.execute(
+        """
+        SELECT o.id, o.url, s.name, o.seller_name,
+               f.brand || ' ' || f.name || ' ' || c.variant_name,
+               o.price_kurus, o.in_stock, o.last_seen_at
+        FROM offers o
+        JOIN stores s ON s.id = o.store_id
+        JOIN configurations c ON c.id = o.configuration_id
+        JOIN model_families f ON f.id = c.family_id
+        WHERE s.fetch_method = 'manual'
+          AND o.last_seen_at < now() - make_interval(
+                days => CASE WHEN o.in_stock THEN %s ELSE %s END)
+        ORDER BY o.last_seen_at, o.id
+        """,
+        (in_stock_days, out_of_stock_days),
+    ).fetchall()
