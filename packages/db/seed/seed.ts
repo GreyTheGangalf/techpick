@@ -213,12 +213,9 @@ async function seedOffers(db: Db) {
   const csv = readCsv("offers.csv");
 
   const storeRows = await db
-    .select({ id: stores.id, name: stores.name, fetchMethod: stores.fetchMethod })
+    .select({ id: stores.id, name: stores.name })
     .from(stores);
   const storeIds = toIdMap(storeRows.map((s) => ({ id: s.id, key: s.name })));
-  const manualStoreIds = new Set(
-    storeRows.filter((s) => s.fetchMethod === "manual").map((s) => s.id),
-  );
   const configIds = toIdMap(
     (await db
       .select({ id: configurations.id, family: modelFamilies.name, variant: configurations.variantName })
@@ -239,32 +236,17 @@ async function seedOffers(db: Db) {
   });
 
   const target = [offers.configurationId, offers.storeId, offers.sellerName];
-  const manualRows = rows.filter((r) => manualStoreIds.has(r.storeId));
-  const cronRows = rows.filter((r) => !manualStoreIds.has(r.storeId));
 
-  // manual stores: re-seeding means "I just checked this price by hand"
-  if (manualRows.length > 0) {
-    await db.insert(offers).values(manualRows).onConflictDoUpdate({
-      target,
-      set: {
-        priceKurus: sql`excluded.price_kurus`,
-        inStock: sql`excluded.in_stock`,
-        url: sql`excluded.url`,
-        lastSeenAt: sql`now()`,
-      },
-    });
-  }
+  // CSV only adds new offers. Existing prices belong to the cron (jsonld)
+  // and to ingest/verify.py (manual), so only the url is refreshed.
+  await db.insert(offers).values(rows).onConflictDoUpdate({
+    target,
+    set: { url: sql`excluded.url` },
+  });
 
-  // jsonld stores: cron owns price, stock and last_seen_at
-  if (cronRows.length > 0) {
-    await db.insert(offers).values(cronRows).onConflictDoUpdate({
-      target,
-      set: { url: sql`excluded.url` },
-    });
-  }
-
-  console.log(`offers: ${manualRows.length} manual, ${cronRows.length} cron-owned rows upserted`);
+  console.log(`offers: ${rows.length} rows upserted (existing: url only)`);
 }
+
 
 const client = postgres(url);
 try {
