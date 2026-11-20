@@ -1,16 +1,16 @@
-name,url,is_trusted
-ASUS Shop,https://shop.asus.com/tr,true
-Hepsiburada,https://www.hepsiburada.com,true
-Ensonu,https://www.ensonu.com,true
-MediaMarkt,https://www.mediamarkt.com.tr,true
-Vatan Bilgisayar,https://www.vatanbilgisayar.com,true
-Trendyol,https://www.trendyol.com,true
-Gaming.gen.tr,https://www.gaming.gen.tr,true
-Laptop.com.tr,https://www.laptop.com.tr,true
-Jebinde.com,https://www.jebinde.com/,true
-Casper,https://www.casper.com.tr/,true 
-Monster,https://www.monsternotebook.com.tr/,true 
-incehesap,https://www.incehesap.com/,true 
-Teknosa,https://www.teknosa.com/,true 
-Game Garaj,https://www.gamegaraj.com/,true 
-Amazon,https://www.amazon.com.tr/,true
+name,url,is_trusted,fetch_method
+ASUS Shop,https://shop.asus.com/tr,true,manual
+Hepsiburada,https://www.hepsiburada.com,true,manual
+Ensonu,https://www.ensonu.com,true,manual
+MediaMarkt,https://www.mediamarkt.com.tr,true,jsonld
+Vatan Bilgisayar,https://www.vatanbilgisayar.com,true,manual
+Trendyol,https://www.trendyol.com,true,jsonld
+Gaming.gen.tr,https://www.gaming.gen.tr,true,manual
+Laptop.com.tr,https://www.laptop.com.tr,true,manual
+Jebinde.com,https://www.jebinde.com/,true,manual
+Casper,https://www.casper.com.tr/,true,manual
+Monster,https://www.monsternotebook.com.tr/,true,manual
+incehesap,https://www.incehesap.com/,true,manual
+Teknosa,https://www.teknosa.com/,true,manual
+Game Garaj,https://www.gamegaraj.com/,true,jsonld
+Amazon,https://www.amazon.com.tr/,true,manual

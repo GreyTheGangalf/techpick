@@ -1,5 +1,7 @@
-import { pgTable, pgEnum, integer, text, numeric, boolean, timestamp, unique } from "drizzle-orm/pg-core";
+import { pgTable, pgEnum, integer, text, numeric, boolean, timestamp, unique, index } from "drizzle-orm/pg-core";
 export const osEnum = pgEnum("os", ["windows", "macos", "linux", "none"]);
+export const fetchMethodEnum = pgEnum("fetch_method", ["jsonld", "manual"]);
+export const panelEnum = pgEnum("panel", ["ips", "oled", "va", "tn"]);
 
 export const modelFamilies = pgTable(
     "model_families",
@@ -7,73 +9,89 @@ export const modelFamilies = pgTable(
         id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
         brand: text("brand").notNull(),
         name: text("name").notNull(),
-        createdAt: timestamp("created_at", {withTimezone: true}).notNull().defaultNow(),
+        createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     },
     (t) => [unique().on(t.brand, t.name)]
 ).enableRLS();
 
-export const configurations = pgTable("configurations", 
+export const configurations = pgTable("configurations",
     {
-    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-    familyId: integer("family_id").notNull().references(() => modelFamilies.id),
-    variantName: text("variant_name").notNull(),
-    mpn: text("mpn").unique(),
-    os: osEnum("os").notNull(),
-    cpuId: integer("cpu_id").notNull().references(() => cpus.id),
-    gpuId:  integer("gpu_id").notNull().references(() => gpus.id),
-    gpuTgpW: integer("gpu_tgp_w"),             
-    ramGb: integer("ram_gb").notNull(),
-    storageGb: integer("storage_gb").notNull(),
-    weightG: integer("weight_g").notNull(),
-    batteryWh: integer("battery_wh").notNull(),
-    screenSizeIn: numeric("screen_size_in", { precision: 3, scale: 1, mode: "number" }).notNull(),
-    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-},
-// ADDED: the same variant cannot be entered twice in one family
-  // (same idea as brand + name on model_families)
-(t) => [unique().on(t.familyId, t.variantName)],
+        id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+        familyId: integer("family_id").notNull().references(() => modelFamilies.id),
+        variantName: text("variant_name").notNull(),
+        mpn: text("mpn").unique(),
+        os: osEnum("os").notNull(),
+        cpuId: integer("cpu_id").notNull().references(() => cpus.id),
+        gpuId: integer("gpu_id").notNull().references(() => gpus.id),
+        gpuTgpW: integer("gpu_tgp_w"),
+        ramGb: integer("ram_gb").notNull(),
+        storageGb: integer("storage_gb").notNull(),
+        weightG: integer("weight_g").notNull(),
+        batteryWh: integer("battery_wh").notNull(),
+        screenSizeIn: numeric("screen_size_in", { precision: 3, scale: 1, mode: "number" }).notNull(),
+        panel: panelEnum("panel"),
+        resolutionW: integer("resolution_w"),
+        resolutionH: integer("resolution_h"),
+        refreshHz: integer("refresh_hz"),
+        createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    },
+    // ADDED: the same variant cannot be entered twice in one family
+    // (same idea as brand + name on model_families)
+    (t) => [unique().on(t.familyId, t.variantName)],
 ).enableRLS();
 
 export const stores = pgTable("stores", {
-id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-name: text("name").notNull().unique(),
-url: text("url").notNull(),
-isTrusted: boolean("is_trusted").notNull().default(false),
-createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    name: text("name").notNull().unique(),
+    url: text("url").notNull(),
+    isTrusted: boolean("is_trusted").notNull().default(false),
+    fetchMethod: fetchMethodEnum("fetch_method").notNull().default("manual"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 }).enableRLS();
 
 export const offers = pgTable(
-"offers",
-{
-    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-    // FIX: this is a foreign key, not a second primary key. Its value comes from configurations,
-    // so it cannot be auto-generated. Also fixed the typo "configuraton_id".
-    configurationId: integer("configuration_id").notNull().references(() => configurations.id),
-    storeId: integer("store_id").notNull().references(() => stores.id),
-    sellerName: text("seller_name").notNull().default(""),
-    priceKurus: integer("price_kurus").notNull(),
-    inStock: boolean("in_stock").notNull(),
-    url: text("url").notNull(),
-    lastSeenAt: timestamp("last_seen_at", { withTimezone: true }).notNull().defaultNow(),
-},
-  // FIX: one offer per configuration + store + seller (decision of 29 Sep)
-(t) => [unique().on(t.configurationId, t.storeId, t.sellerName)],
+    "offers",
+    {
+        id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+        // FIX: this is a foreign key, not a second primary key. Its value comes from configurations,
+        // so it cannot be auto-generated. Also fixed the typo "configuraton_id".
+        configurationId: integer("configuration_id").notNull().references(() => configurations.id),
+        storeId: integer("store_id").notNull().references(() => stores.id),
+        sellerName: text("seller_name").notNull().default(""),
+        priceKurus: integer("price_kurus").notNull(),
+        inStock: boolean("in_stock").notNull(),
+        url: text("url").notNull(),
+        lastSeenAt: timestamp("last_seen_at", { withTimezone: true }).notNull().defaultNow(),
+    },
+    // FIX: one offer per configuration + store + seller (decision of 29 Sep)
+    (t) => [unique().on(t.configurationId, t.storeId, t.sellerName)],
+).enableRLS();
+
+export const priceHistory = pgTable(
+    "price_history",
+    {
+        id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+        offerId: integer("offer_id").notNull().references(() => offers.id),
+        priceKurus: integer("price_kurus").notNull(),
+        recordedAt: timestamp("recorded_at", { withTimezone: true }).notNull().defaultNow(),
+    },
+    (t) => [index("price_history_offer_recorded_idx").on(t.offerId, t.recordedAt)],
 ).enableRLS();
 
 export const cpus = pgTable("cpus", {
-id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-model: text("model").notNull().unique(),                
-vendor: text("vendor").notNull(),                        
-cb2024Single: integer("cb2024_single").notNull(),        
-cb2024Multi: integer("cb2024_multi").notNull(),          
-createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    model: text("model").notNull().unique(),
+    vendor: text("vendor").notNull(),
+    cb2024Single: integer("cb2024_single").notNull(),
+    cb2024Multi: integer("cb2024_multi").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 }).enableRLS();
 
-export const gpus = pgTable("gpus",{
-id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-model: text("model").notNull().unique(),                 
-vendor: text("vendor").notNull(),
-timespyGraphics: integer("timespy_graphics").notNull(),
-timespyRefTgpW: integer("timespy_ref_tgp_w"),
-createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+export const gpus = pgTable("gpus", {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    model: text("model").notNull().unique(),
+    vendor: text("vendor").notNull(),
+    timespyGraphics: integer("timespy_graphics").notNull(),
+    timespyRefTgpW: integer("timespy_ref_tgp_w"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 }).enableRLS();

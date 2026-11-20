@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { eq, sql } from "drizzle-orm";
 import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { configurations, cpus, gpus, modelFamilies, offers, osEnum, stores } from "../src/schema.ts";
+import { configurations, cpus, gpus, modelFamilies, offers, osEnum, stores, fetchMethodEnum } from "../src/schema.ts";
 
 
 type Db = PostgresJsDatabase;
@@ -170,6 +170,16 @@ function toOs(value: string, line: number): Os {
   return value as Os;
 }
 
+type FetchMethod = (typeof fetchMethodEnum.enumValues)[number];
+
+function toFetchMethod(value: string, line: number): FetchMethod {
+  const allowed: readonly string[] = fetchMethodEnum.enumValues;
+  if (!allowed.includes(value)) {
+    throw new Error(`stores.csv line ${line}: fetch_method "${value}" must be one of ${allowed.join(", ")}`);
+  }
+  return value as FetchMethod;
+}
+
 function toBool(value: string, field: string): boolean {
   if (value === "true") return true;
   if (value === "false") return false;
@@ -177,10 +187,11 @@ function toBool(value: string, field: string): boolean {
 }
 
 async function seedStores(db: Db) {
-  const rows = readCsv("stores.csv").map((r) => ({
+  const rows = readCsv("stores.csv").map((r, i) => ({
     name: r.name,
     url: r.url,
     isTrusted: toBool(r.is_trusted, "is_trusted"),
+    fetchMethod: toFetchMethod(r.fetch_method, i + 2),
   }));
 
   await db
@@ -188,7 +199,11 @@ async function seedStores(db: Db) {
     .values(rows)
     .onConflictDoUpdate({
       target: stores.name,
-      set: { url: sql`excluded.url`, isTrusted: sql`excluded.is_trusted` },
+      set: {
+        url: sql`excluded.url`,
+        isTrusted: sql`excluded.is_trusted`,
+        fetchMethod: sql`excluded.fetch_method`,
+      },
     });
 
   console.log(`stores: ${rows.length} rows upserted`);
@@ -197,7 +212,13 @@ async function seedStores(db: Db) {
 async function seedOffers(db: Db) {
   const csv = readCsv("offers.csv");
 
-  const storeIds = toIdMap(await db.select({ id: stores.id, key: stores.name }).from(stores));
+  const storeRows = await db
+    .select({ id: stores.id, name: stores.name, fetchMethod: stores.fetchMethod })
+    .from(stores);
+  const storeIds = toIdMap(storeRows.map((s) => ({ id: s.id, key: s.name })));
+  const manualStoreIds = new Set(
+    storeRows.filter((s) => s.fetchMethod === "manual").map((s) => s.id),
+  );
   const configIds = toIdMap(
     (await db
       .select({ id: configurations.id, family: modelFamilies.name, variant: configurations.variantName })
@@ -210,18 +231,21 @@ async function seedOffers(db: Db) {
     return {
       configurationId: lookup(configIds, `${r.family}|${r.variant_name}`, "configuration", line),
       storeId: lookup(storeIds, r.store, "store", line),
-      sellerName: r.sellerName,
+      sellerName: r.seller_name,
       priceKurus: toInt(r.price_kurus, "price_kurus"),
-      inStock: toBool(r.in_stock,"in_stock"),
+      inStock: toBool(r.in_stock, "in_stock"),
       url: r.url,
     };
   });
 
-  await db
-    .insert(offers)
-    .values(rows)
-    .onConflictDoUpdate({
-      target: [offers.configurationId, offers.storeId, offers.sellerName],
+  const target = [offers.configurationId, offers.storeId, offers.sellerName];
+  const manualRows = rows.filter((r) => manualStoreIds.has(r.storeId));
+  const cronRows = rows.filter((r) => !manualStoreIds.has(r.storeId));
+
+  // manual stores: re-seeding means "I just checked this price by hand"
+  if (manualRows.length > 0) {
+    await db.insert(offers).values(manualRows).onConflictDoUpdate({
+      target,
       set: {
         priceKurus: sql`excluded.price_kurus`,
         inStock: sql`excluded.in_stock`,
@@ -229,8 +253,17 @@ async function seedOffers(db: Db) {
         lastSeenAt: sql`now()`,
       },
     });
+  }
 
-  console.log(`offers: ${rows.length} rows upserted`);
+  // jsonld stores: cron owns price, stock and last_seen_at
+  if (cronRows.length > 0) {
+    await db.insert(offers).values(cronRows).onConflictDoUpdate({
+      target,
+      set: { url: sql`excluded.url` },
+    });
+  }
+
+  console.log(`offers: ${manualRows.length} manual, ${cronRows.length} cron-owned rows upserted`);
 }
 
 const client = postgres(url);
