@@ -8,6 +8,10 @@ function formatTl(kurus: number): string {
     return `${Math.round(kurus / 100).toLocaleString("tr-TR")} TL`;
 }
 
+function formatDay(date: Date): string {
+    return date.toLocaleDateString("tr-TR", { day: "numeric", month: "long", timeZone: "Europe/Istanbul" });
+}
+
 export function ResultCard({ label, card, details }: Props) {
     const c = card.ranked.candidate;
     const { strengths, weaknesses } = card.explanation;
@@ -23,6 +27,9 @@ export function ResultCard({ label, card, details }: Props) {
                     {c.cpu.model} · {c.gpu.model} · {c.ramGb} GB RAM
                 </p>
                 <p className="text-2xl font-semibold">{formatTl(details.priceKurus)}</p>
+                <p className="text-xs text-muted-foreground">
+                    Fiyat {formatDay(details.checkedAt)} tarihinde kontrol edildi
+                </p>
                 <ul className="space-y-1 text-sm">
                     {strengths.map((s) => (
                         <li key={s}>✓ {s}</li>
@@ -33,7 +40,7 @@ export function ResultCard({ label, card, details }: Props) {
                     {weaknesses.map((w) => (
                         <li key={w}>- {w}</li>
                     ))}
-                    
+
                 </ul>
             </CardContent>
             <CardFooter>
