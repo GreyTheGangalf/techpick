@@ -1,6 +1,6 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { and, eq, inArray, min } from "drizzle-orm";
+import { and, eq, inArray, min, sql } from "drizzle-orm";
 import { configurations, cpus, gpus, modelFamilies, offers, stores } from "@techpick/db/schema";
 import type { Candidate } from "@techpick/engine";
 
@@ -18,8 +18,14 @@ function getDb() {
     }
     return cached;
 }
+// Freshness rule (decision 20 Nov): cron-checked offers expire after 48 hours,
+// hand-verified (manual) offers after 7 days. Stale offers are hidden, never deleted.
+const offerIsFresh = sql`${offers.lastSeenAt} > now() - CASE
+    WHEN ${stores.fetchMethod} = 'jsonld' THEN interval '48 hours'
+    ELSE interval '7 days'
+  END`;
 
-export type CardDetails = { name: string; storeName: string; url: string; priceKurus: number };
+export type CardDetails = { name: string; storeName: string; url: string; priceKurus: number; checkedAt: Date };
 
 export async function loadCardDetails(ids: number[]): Promise<Map<number, CardDetails>> {
     const details = new Map<number, CardDetails>();
@@ -35,13 +41,13 @@ export async function loadCardDetails(ids: number[]): Promise<Map<number, CardDe
             storeName: stores.name,
             url: offers.url,
             price: offers.priceKurus,
+            checkedAt: offers.lastSeenAt,
         })
         .from(offers)
         .innerJoin(stores, eq(offers.storeId, stores.id))
         .innerJoin(configurations, eq(offers.configurationId, configurations.id))
         .innerJoin(modelFamilies, eq(configurations.familyId, modelFamilies.id))
-        .where(and(inArray(offers.configurationId, ids), eq(offers.inStock, true), eq(stores.isTrusted, true)));
-
+        .where(and(inArray(offers.configurationId, ids), eq(offers.inStock, true), eq(stores.isTrusted, true), offerIsFresh));
     // One configuration can have several offers: keep the cheapest.
     for (const r of rows) {
         const current = details.get(r.configurationId);
@@ -51,6 +57,7 @@ export async function loadCardDetails(ids: number[]): Promise<Map<number, CardDe
                 storeName: r.storeName,
                 url: r.url,
                 priceKurus: r.price,
+                checkedAt: r.checkedAt,
             });
         }
     }
@@ -64,10 +71,9 @@ export async function loadCandidates(): Promise<Candidate[]> {
         .select({ configurationId: offers.configurationId, priceKurus: min(offers.priceKurus).as("price_kurus") })
         .from(offers)
         .innerJoin(stores, eq(offers.storeId, stores.id))
-        .where(and(eq(offers.inStock, true), eq(stores.isTrusted, true)))
+        .where(and(eq(offers.inStock, true), eq(stores.isTrusted, true), offerIsFresh))
         .groupBy(offers.configurationId)
         .as("best_price");
-
     const rows = await db
         .select({
             configurationId: configurations.id,

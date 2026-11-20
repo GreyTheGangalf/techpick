@@ -57,6 +57,9 @@ Her çalışma oturumundan sonra buraya kısa bir not ekle: tarih, ne karar veri
 | 18 Kas 2026 | Tarihçe başlangıcı | Offer'ın price_history'si boşsa cron ilk fiyatı başlangıç satırı olarak yazar; sonra yalnızca fiyat değişince yazılır. | "Bu fiyat ne zamandan beri böyle" sorusu ilk günden cevaplanabilsin. |
 | 19 Kas 2026 | 403 veren mağazalar | Hepsiburada, Teknosa ve incehesap bot isteklerine 403 dönüyor; manual'a alındı. Tarayıcı taklidi yapılmaz; affiliate feed gelince cron'a dönerler. | Ürün kartı: fiyat yalnızca izin verilen kaynaklardan. |
 | 20 Kas 2026 | Satıcı kontrolü | Cron sayfadaki satıcıyı offer'ın seller_name'iyle karşılaştırır (boş = mağazanın kendisi, harf duyarsız); uyuşmazsa offer'a dokunmaz. Yanlış girilmiş offer satırları elle silinebilir, eskiyenler silinmez. | Pazar yerinde öne çıkan satıcı değişince başka satıcının fiyatı yazılmasın. |
+| 20 Kas 2026 | Fiyat cron'u canlı | GitHub Actions, 08:00 ve 20:00 (İstanbul). Cron: Trendyol, Game Garaj. MediaMarkt GitHub IP'lerini engellediği için manual. Proxy/IP gizleme yapılmaz. | Lokal çalışan ama sunucudan engellenen kaynak, izin verilen kaynak sayılmaz. |
+| 20 Kas 2026 | Manual fiyat bakımı | Manual offer’lar ingest/verify.py ile elle doğrulanır. Tazelik süresi jsonld için 48 saat, manual için 7 gün; kartta kontrol tarihi gösterilir. 18 Kas kararını günceller. | Tarayıcı agent’ı engellenen otomatik erişimdir; 37 linki 2 günde bir kontrol etmek sürdürülemez.Stokta olmayanlar 14 günde bir kontrol edilir |
+| 20 Kas 2026 | Seed ve fiyatlar | Seed yalnızca yeni offer ekler; mevcut offer’ın fiyatı, stoğu ve last_seen_at’i cron (jsonld) ya da verify.py (manual) tarafından yazılır, seed sadece URL’yi günceller. 18 Kas’taki “re-seed = elle doğrulama” kararını değiştirir. | Eski CSV fiyatı yeniden seed’lenince bayat fiyat taze görünürdü. |
 
 ## Açık işler
 
