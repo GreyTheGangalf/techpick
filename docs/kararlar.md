@@ -60,12 +60,15 @@ Her çalışma oturumundan sonra buraya kısa bir not ekle: tarih, ne karar veri
 | 20 Kas 2026 | Fiyat cron'u canlı | GitHub Actions, 08:00 ve 20:00 (İstanbul). Cron: Trendyol, Game Garaj. MediaMarkt GitHub IP'lerini engellediği için manual. Proxy/IP gizleme yapılmaz. | Lokal çalışan ama sunucudan engellenen kaynak, izin verilen kaynak sayılmaz. |
 | 20 Kas 2026 | Manual fiyat bakımı | Manual offer’lar ingest/verify.py ile elle doğrulanır. Tazelik süresi jsonld için 48 saat, manual için 7 gün; kartta kontrol tarihi gösterilir. 18 Kas kararını günceller. | Tarayıcı agent’ı engellenen otomatik erişimdir; 37 linki 2 günde bir kontrol etmek sürdürülemez.Stokta olmayanlar 14 günde bir kontrol edilir |
 | 20 Kas 2026 | Seed ve fiyatlar | Seed yalnızca yeni offer ekler; mevcut offer’ın fiyatı, stoğu ve last_seen_at’i cron (jsonld) ya da verify.py (manual) tarafından yazılır, seed sadece URL’yi günceller. 18 Kas’taki “re-seed = elle doğrulama” kararını değiştirir. | Eski CSV fiyatı yeniden seed’lenince bayat fiyat taze görünürdü. |
+| 21 Kas 2026 | Apple ve panel | MacBook'lar MVP'de, birkaç taban model. Apple GPU'nun Time Spy skoru yok; motor eksik GPU skorunu çökmeden ele alır. Oyun seçilince Mac elenmez, açıklama sonraya bırakıldı. Panel enum'unda TN var; ekran skorunda en düşük puanı alır. | Orta segment zaten 60-70 bin TL bandında; Mac oyun için önerilmez. |
+| 21 Kas 2026 | Aile/variant adı değişimi | Eski satır silinmez; DB'de family_id/variant_name SQL ile güncellenir, sonra seed çalışır. 14 Eki'deki "elle silinir"i günceller. | Offer ve price_history id'ye bağlı. |
 
 ## Açık işler
 
 - [ ] techpick.com.tr alan adını kaydet (ucuz, şimdi alınabilir)
 - [ ] Affiliate geliri için vergi durumunu bir mali müşavire sor (ilk ödemeden önce)
 - [ ] Teknosa Paylaş Kazan'a katıl; Gelir Ortakları ve Admitad'a yayıncı olarak kaydol (hafta 7-8)
+- [ ] 23 Kas: verify.py ile ilk manual kontrol
 
 ## Şu anki hafta
 

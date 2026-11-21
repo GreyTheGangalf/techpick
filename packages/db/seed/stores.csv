@@ -2,7 +2,7 @@ name,url,is_trusted,fetch_method
 ASUS Shop,https://shop.asus.com/tr,true,manual
 Hepsiburada,https://www.hepsiburada.com,true,manual
 Ensonu,https://www.ensonu.com,true,manual
-MediaMarkt,https://www.mediamarkt.com.tr,true,jsonld
+MediaMarkt,https://www.mediamarkt.com.tr,true,manual
 Vatan Bilgisayar,https://www.vatanbilgisayar.com,true,manual
 Trendyol,https://www.trendyol.com,true,jsonld
 Gaming.gen.tr,https://www.gaming.gen.tr,true,manual
@@ -14,3 +14,6 @@ incehesap,https://www.incehesap.com/,true,manual
 Teknosa,https://www.teknosa.com/,true,manual
 Game Garaj,https://www.gamegaraj.com/,true,jsonld
 Amazon,https://www.amazon.com.tr/,true,manual
+Lowell,https://www.lowell.com.tr,true,manual
+Atlantis Bilgisayar,https://www.atlantisbilgisayar.net,true,manual
+Pazarama,https://www.pazarama.com,true,manual

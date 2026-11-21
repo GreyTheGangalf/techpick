@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { eq, sql } from "drizzle-orm";
 import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { configurations, cpus, gpus, modelFamilies, offers, osEnum, stores, fetchMethodEnum } from "../src/schema.ts";
+import { configurations, cpus, gpus, modelFamilies, offers, osEnum, stores, fetchMethodEnum, panelEnum } from "../src/schema.ts";
 
 
 type Db = PostgresJsDatabase;
@@ -101,7 +101,7 @@ if (!url) {
 function lookup(map: Map<string, number>, name: string, what: string, line: number): number {
   const id = map.get(name);
   if (id === undefined) {
-    throw new Error(`configurations.csv line ${line}: unknown ${what} "${name}" (add it to ${what}s.csv first)`);
+    throw new Error(`CSV line ${line}: unknown ${what} "${name}" (add it to ${what}s.csv first)`);
   }
   return id;
 }
@@ -134,6 +134,7 @@ async function seedConfigurations(db: Db) {
       weightG: toInt(r.weight_g, "weight_g"),
       batteryWh: toInt(r.battery_wh, "battery_wh"),
       screenSizeIn: toDecimal(r.screen_size_in, "screen_size_in"),
+      panel: toPanelOrNull(r.panel, line),
     };
   });
 
@@ -153,6 +154,7 @@ async function seedConfigurations(db: Db) {
         weightG: sql`excluded.weight_g`,
         batteryWh: sql`excluded.battery_wh`,
         screenSizeIn: sql`excluded.screen_size_in`,
+        panel: sql`excluded.panel`,
       },
     });
 
@@ -168,6 +170,17 @@ function toOs(value: string, line: number): Os {
     throw new Error(`configurations.csv line ${line}: os "${value}" must be one of ${allowed.join(", ")}`);
   }
   return value as Os;
+}
+
+type Panel = (typeof panelEnum.enumValues)[number];
+
+function toPanelOrNull(value: string, line: number): Panel | null {
+  if (value === "") return null;
+  const allowed: readonly string[] = panelEnum.enumValues;
+  if (!allowed.includes(value)) {
+    throw new Error(`configurations.csv line ${line}: panel "${value}" must be empty or one of ${allowed.join(", ")}`);
+  }
+  return value as Panel;
 }
 
 type FetchMethod = (typeof fetchMethodEnum.enumValues)[number];
