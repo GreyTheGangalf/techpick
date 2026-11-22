@@ -16,11 +16,12 @@ function makeCandidate(overrides: Partial<Candidate> = {}): Candidate {
     weightG: 2200,
     batteryWh: 70,
     screenSizeIn: 16,
+    panel: "ips",
     priceKurus: 3_000_000, // 30.000 TL
     ...overrides,
   };
 }
- 
+
 function makeAnswers(overrides: Partial<Answers> = {}): Answers {
   return {
     budgetKurus: 3_000_000,

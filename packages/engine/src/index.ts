@@ -1,4 +1,4 @@
-export type { Answers, Candidate, Profile, ScreenSize } from "./types.ts";
+export type { Answers, Candidate, Panel, Profile, ScreenSize } from "./types.ts";
 export type { SubScores } from "./scores.ts";
 export type { Ranked } from "./rank.ts";
 export type { Explanation } from "./explain.ts";

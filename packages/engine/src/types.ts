@@ -1,3 +1,5 @@
+export type Panel = "ips" | "oled" | "va" | "tn";
+
 export type Candidate = {
   configurationId: number;
   familyId: number;
@@ -10,6 +12,7 @@ export type Candidate = {
   weightG: number;
   batteryWh: number;
   screenSizeIn: number;
+  panel: Panel | null;
   priceKurus: number;
 };
 export type Profile = "student" | "software" | "gaming" | "creative";

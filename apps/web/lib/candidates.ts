@@ -91,6 +91,7 @@ export async function loadCandidates(): Promise<Candidate[]> {
             weightG: configurations.weightG,
             batteryWh: configurations.batteryWh,
             screenSizeIn: configurations.screenSizeIn,
+            panel: configurations.panel,
             priceKurus: bestPrice.priceKurus,
         })
 
@@ -111,6 +112,7 @@ export async function loadCandidates(): Promise<Candidate[]> {
         weightG: r.weightG,
         batteryWh: r.batteryWh,
         screenSizeIn: r.screenSizeIn,
+        panel: r.panel,
         priceKurus: Number(r.priceKurus),
     }));
 }
