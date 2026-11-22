@@ -63,6 +63,7 @@ Her çalışma oturumundan sonra buraya kısa bir not ekle: tarih, ne karar veri
 | 21 Kas 2026 | Apple ve panel | MacBook'lar MVP'de, birkaç taban model. Apple GPU'nun Time Spy skoru yok; motor eksik GPU skorunu çökmeden ele alır. Oyun seçilince Mac elenmez, açıklama sonraya bırakıldı. Panel enum'unda TN var; ekran skorunda en düşük puanı alır. | Orta segment zaten 60-70 bin TL bandında; Mac oyun için önerilmez. |
 | 21 Kas 2026 | Aile/variant adı değişimi | Eski satır silinmez; DB'de family_id/variant_name SQL ile güncellenir, sonra seed çalışır. 14 Eki'deki "elle silinir"i günceller. | Offer ve price_history id'ye bağlı. |
 | 22 Kas 2026 | Ekran skoru | Panel puanı oled 100, ips 75, va 50, tn 20; bilinmeyen panel ips sayılır; aday küme içinde normalize edilir. 23 Eki'deki "herkese 100" kararını günceller. | Zayıf/güçlü yön metinleri göreli; mutlak skor herkes IPS iken ekranı yanlışlıkla zayıf yön yapardı. |
+| 22 Kas 2026 | Bilinmeyen GPU | Time Spy skoru olmayan GPU (Apple): oyun seçilmediyse GPU ağırlığı o aday için hesaptan çıkar, seçildiyse 0 sayılır; value yalnızca CPU'dan. Kural veriye (timespy null) bakar, işletim sistemine değil. | Creative Mac haksız ceza yemesin; oyunda elemeden alta düşsün. |
 
 ## Açık işler
 
