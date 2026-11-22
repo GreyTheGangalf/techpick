@@ -54,3 +54,22 @@ test("filtered-out candidates never appear", () => {
   const ranked = rankCandidates(makeAnswers(), [makeCandidate({ priceKurus: 4_000_000 })]);
   assert.deepEqual(ranked, []);
 });
+
+const appleGpu = { model: "Apple M4 10-Core GPU", timespyGraphics: null, timespyRefTgpW: null };
+
+test("unknown GPU is ignored when the user doesn't play games", () => {
+  const ranked = rankCandidates(makeAnswers({ profiles: ["creative"] }), [
+    makeCandidate({ configurationId: 1, familyId: 1 }),
+    makeCandidate({ configurationId: 2, familyId: 2, gpu: appleGpu, gpuTgpW: null }),
+  ]);
+  assert.equal(ranked[0].score, ranked[1].score);
+});
+
+test("unknown GPU counts as 0 for gamers", () => {
+  const ranked = rankCandidates(makeAnswers({ profiles: ["gaming"] }), [
+    makeCandidate({ configurationId: 1, familyId: 1 }),
+    makeCandidate({ configurationId: 2, familyId: 2, gpu: appleGpu, gpuTgpW: null }),
+  ]);
+  assert.deepEqual(ranked.map((r) => r.candidate.configurationId), [1, 2]);
+  assert.equal(ranked[1].score, ranked[0].score - 45);
+});

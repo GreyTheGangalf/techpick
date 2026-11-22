@@ -69,3 +69,25 @@ test("same panel everywhere: screen is 100 for all", () => {
     assert.equal(a.screen, 100);
     assert.equal(b.screen, 100);
 });
+
+const appleGpu = { model: "Apple M4 10-Core GPU", timespyGraphics: null, timespyRefTgpW: null };
+
+test("unknown GPU gets 0 and does not shift the others", () => {
+    const [strong, weak, unknown] = subScores([
+        makeCandidate({ gpu: { model: "NVIDIA GeForce RTX 5060", timespyGraphics: 12306, timespyRefTgpW: 115 } }),
+        makeCandidate({ gpu: { model: "AMD Radeon 890M", timespyGraphics: 3331, timespyRefTgpW: null }, gpuTgpW: null }),
+        makeCandidate({ gpu: appleGpu, gpuTgpW: null }),
+    ]);
+    assert.equal(strong.gpu, 100);
+    assert.equal(weak.gpu, 0);
+    assert.equal(unknown.gpu, 0);
+});
+
+test("unknown GPU: value comes from the CPU alone", () => {
+    const [known, unknown] = subScores([
+        makeCandidate(),
+        makeCandidate({ gpu: appleGpu, gpuTgpW: null }),
+    ]);
+    // same CPU and price: known = (100 + 100) / 2, unknown = 100 -> equal value
+    assert.equal(known.value, unknown.value);
+});

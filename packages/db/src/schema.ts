@@ -91,7 +91,8 @@ export const gpus = pgTable("gpus", {
     id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
     model: text("model").notNull().unique(),
     vendor: text("vendor").notNull(),
-    timespyGraphics: integer("timespy_graphics").notNull(),
+    // null = no Time Spy score exists (e.g. Apple GPUs, decision 22 Nov)
+    timespyGraphics: integer("timespy_graphics"),
     timespyRefTgpW: integer("timespy_ref_tgp_w"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 }).enableRLS();

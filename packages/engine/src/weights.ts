@@ -37,12 +37,18 @@ export function combineWeights(profiles: Profile[]): Weights {
     };
 }
 
-export function weightedScore(sub: SubScores, w: Weights): number {
+// ignoreGpu: drop the gpu weight and rescale the rest (unknown GPU, decision 22 Nov).
+export function weightedScore(sub: SubScores, w: Weights, ignoreGpu: boolean = false): number {
     let sum = 0;
+    let used = 0;
 
-    for (const key of Object.keys(w) as (keyof Weights)[]) { 
-        sum += sub[key] * w[key]
+    for (const key of Object.keys(w) as (keyof Weights)[]) {
+        if (ignoreGpu && key === "gpu") {
+            continue;
+        }
+        sum += sub[key] * w[key];
+        used += w[key];
     }
 
-    return sum / 100
+    return used === 0 ? 0 : sum / used;
 }

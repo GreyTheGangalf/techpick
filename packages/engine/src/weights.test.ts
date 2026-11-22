@@ -22,3 +22,9 @@ test("weightedScore: all 100s give 100, gaming favours gpu", () => {
     const onlyGpu = { ...all100, cpu: 0, memory: 0, screen: 0, portability: 0, value: 0 };
     assert.equal(weightedScore(onlyGpu, PROFILE_WEIGHTS.gaming), 45);
 });
+
+test("weightedScore: ignoring gpu rescales the remaining weights", () => {
+    const noGpu = { cpu: 100, gpu: 0, memory: 100, screen: 100, portability: 100, value: 100 };
+    assert.equal(weightedScore(noGpu, PROFILE_WEIGHTS.creative), 75);
+    assert.equal(weightedScore(noGpu, PROFILE_WEIGHTS.creative, true), 100);
+});
