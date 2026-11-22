@@ -17,7 +17,12 @@ export type SubScores = {
 };
 
 export function subScores(candidates: Candidate[]): SubScores[] {
-  const gpu = normalize(candidates.map(gpuScore));
+  // Unknown GPUs are left out of normalization so they don't shift the scale for the others,
+  // then get 0. rank.ts decides whether that 0 counts (decision 22 Nov).
+  const gpuRaw = candidates.map(gpuScore);
+  const knownGpu = normalize(gpuRaw.filter((g): g is number => g !== null));
+  let k = 0;
+  const gpu = gpuRaw.map((g) => (g === null ? 0 : knownGpu[k++]));
   const memory = normalize(candidates.map((c) => c.ramGb));
   const screen = normalize(
   candidates.map((c) => (c.panel === null ? UNKNOWN_PANEL_SCORE : PANEL_SCORE[c.panel])),
@@ -31,7 +36,10 @@ export function subScores(candidates: Candidate[]): SubScores[] {
   const battery = normalize(candidates.map((c) => c.batteryWh));
   const portability = weight.map((w, i) => (w + battery[i]) / 2);
 
-  const value = normalize(candidates.map((c, i) => ((cpu[i] + gpu[i]) / 2) / c.priceKurus));
+    // Unknown GPU: performance = CPU only, so a missing score doesn't halve value.
+  const value = normalize(
+    candidates.map((c, i) => (gpuRaw[i] === null ? cpu[i] : (cpu[i] + gpu[i]) / 2) / c.priceKurus),
+  );
 
   return candidates.map((_, i) => ({
     cpu: cpu[i], gpu: gpu[i], memory: memory[i],

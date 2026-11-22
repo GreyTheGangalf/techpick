@@ -49,3 +49,11 @@ test("FreeDOS is always mentioned as a weakness", () => {
     const e = explain(makeCandidate({ os: "none" }), sub, PROFILE_WEIGHTS.gaming);
     assert.equal(e.weaknesses.length, 2);
 });
+
+test("unknown GPU: fixed note instead of a GPU reason", () => {
+    const appleGpu = { model: "Apple M4 10-Core GPU", timespyGraphics: null, timespyRefTgpW: null };
+    const e = explain(makeCandidate({ gpu: appleGpu, gpuTgpW: null }), { ...sub, gpu: 0 }, PROFILE_WEIGHTS.creative);
+    assert.ok(e.weaknesses.includes("Graphics performance could not be measured; not recommended for demanding games."));
+    assert.ok(!e.weaknesses.includes("The graphics card is weak compared to other options; it will struggle with demanding games."));
+    assert.ok(!e.strengths.includes("The graphics card is powerful enough for gaming and graphics-intensive tasks."));
+});

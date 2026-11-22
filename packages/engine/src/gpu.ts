@@ -2,7 +2,11 @@ import type { Candidate } from "./types.ts";
 
 export const TGP_EXPONENT = 0.5;
 
-export function gpuScore(c: Pick<Candidate, "gpu" | "gpuTgpW">): number {
+// null = unknown GPU performance; callers decide what that means.
+export function gpuScore(c: Pick<Candidate, "gpu" | "gpuTgpW">): number | null {
+    if (c.gpu.timespyGraphics === null) {
+        return null;
+    }
     const ref = c.gpu.timespyRefTgpW;
 
     if (ref === null || c.gpuTgpW === null) {

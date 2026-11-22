@@ -27,3 +27,8 @@ test("unknown laptop TGP: use the reference score", () => {
 test("higher TGP than the reference: no bonus", () => {
   assert.equal(gpuScore({ gpu: rtx5060, gpuTgpW: 140 }), 12306);
 });
+
+test("no Time Spy score: unknown, not zero", () => {
+  const appleGpu = { model: "Apple M4 10-Core GPU", timespyGraphics: null, timespyRefTgpW: null };
+  assert.equal(gpuScore({ gpu: appleGpu, gpuTgpW: null }), null);
+});

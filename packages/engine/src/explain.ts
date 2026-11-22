@@ -26,7 +26,9 @@ const WEAKNESS_TEXT: Record<Key, string> = {
 
 export function explain(c: Candidate, sub: SubScores, w: Weights): Explanation {
    // Fields the user cares about (weight > 0).
-  const keys = (Object.keys(w) as Key[]).filter((k) => w[k] > 0);
+  const gpuUnknown = c.gpu.timespyGraphics === null;
+  // Unknown GPU: never a reason in either direction; the fixed note below covers it.
+  const keys = (Object.keys(w) as Key[]).filter((k) => w[k] > 0 && !(k === "gpu" && gpuUnknown));
 
   const byContribution = [...keys].sort((a,b) => sub[b] * w[b] -  sub[a] * w[a]);
   const strengths = byContribution.slice(0, 2).map((k) => STRENGTH_TEXT[k]);
@@ -34,6 +36,9 @@ export function explain(c: Candidate, sub: SubScores, w: Weights): Explanation {
   const weakest = [...keys].sort((a,b) => sub[a] - sub[b])[0];
   const weaknesses = [WEAKNESS_TEXT[weakest]];
 
+  if (gpuUnknown) {
+    weaknesses.push("Graphics performance could not be measured; not recommended for demanding games.");
+  }
   if (c.os === "none") {
     weaknesses.push("No operating system is installed (FreeDOS); you will need to purchase a Windows license separately.");
   }

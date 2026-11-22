@@ -11,12 +11,17 @@ export function rankCandidates(answers: Answers, candidates: Candidate[]): Ranke
     const eligible = filterCandidates(answers, candidates);
     const subs = subScores(eligible); // normalized within the eligible set only
     const weights = combineWeights(answers.profiles);
+    const playsGames = answers.profiles.includes("gaming");
 
-    const ranked = eligible.map((c, i) => ({
-        candidate: c,
-        sub: subs[i],
-        score: weightedScore(subs[i], weights) - penalty(c, answers),
-    }));
+    const ranked = eligible.map((c, i) => {
+        // Unknown GPU (decision 22 Nov): ignored unless the user plays games, then it counts as 0.
+        const ignoreGpu = c.gpu.timespyGraphics === null && !playsGames;
+        return {
+            candidate: c,
+            sub: subs[i],
+            score: weightedScore(subs[i], weights, ignoreGpu) - penalty(c, answers),
+        };
+    });
 
     ranked.sort((a, b) => b.score - a.score);
 

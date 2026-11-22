@@ -5,7 +5,8 @@ export type Candidate = {
   familyId: number;
   os: "windows" | "macos" | "linux" | "none";
   cpu: { model: string; cb2024Single: number; cb2024Multi: number };
-  gpu: { model: string; timespyGraphics: number; timespyRefTgpW: number | null };
+    // timespyGraphics null = no Time Spy score exists (e.g. Apple GPUs)
+  gpu: { model: string; timespyGraphics: number | null; timespyRefTgpW: number | null };
   gpuTgpW: number | null;
   ramGb: number;
   storageGb: number;
