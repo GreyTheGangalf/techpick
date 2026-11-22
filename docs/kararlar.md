@@ -62,6 +62,7 @@ Her çalışma oturumundan sonra buraya kısa bir not ekle: tarih, ne karar veri
 | 20 Kas 2026 | Seed ve fiyatlar | Seed yalnızca yeni offer ekler; mevcut offer’ın fiyatı, stoğu ve last_seen_at’i cron (jsonld) ya da verify.py (manual) tarafından yazılır, seed sadece URL’yi günceller. 18 Kas’taki “re-seed = elle doğrulama” kararını değiştirir. | Eski CSV fiyatı yeniden seed’lenince bayat fiyat taze görünürdü. |
 | 21 Kas 2026 | Apple ve panel | MacBook'lar MVP'de, birkaç taban model. Apple GPU'nun Time Spy skoru yok; motor eksik GPU skorunu çökmeden ele alır. Oyun seçilince Mac elenmez, açıklama sonraya bırakıldı. Panel enum'unda TN var; ekran skorunda en düşük puanı alır. | Orta segment zaten 60-70 bin TL bandında; Mac oyun için önerilmez. |
 | 21 Kas 2026 | Aile/variant adı değişimi | Eski satır silinmez; DB'de family_id/variant_name SQL ile güncellenir, sonra seed çalışır. 14 Eki'deki "elle silinir"i günceller. | Offer ve price_history id'ye bağlı. |
+| 22 Kas 2026 | Ekran skoru | Panel puanı oled 100, ips 75, va 50, tn 20; bilinmeyen panel ips sayılır; aday küme içinde normalize edilir. 23 Eki'deki "herkese 100" kararını günceller. | Zayıf/güçlü yön metinleri göreli; mutlak skor herkes IPS iken ekranı yanlışlıkla zayıf yön yapardı. |
 
 ## Açık işler
 

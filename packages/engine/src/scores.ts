@@ -1,6 +1,11 @@
-import type { Candidate } from "./types.ts";
+import type { Candidate, Panel } from "./types.ts";
 import { normalize } from "./normalize.ts";
 import { gpuScore } from "./gpu.ts";
+
+// Raw panel quality before normalization (decision 22 Nov).
+const PANEL_SCORE: Record<Panel, number> = { oled: 100, ips: 75, va: 50, tn: 20 };
+// Unknown panel: most laptops without a listed panel are IPS; don't punish or reward missing data.
+const UNKNOWN_PANEL_SCORE = PANEL_SCORE.ips;
 
 export type SubScores = {
   cpu: number;
@@ -14,8 +19,9 @@ export type SubScores = {
 export function subScores(candidates: Candidate[]): SubScores[] {
   const gpu = normalize(candidates.map(gpuScore));
   const memory = normalize(candidates.map((c) => c.ramGb));
-  //No panel data, everyone is 100
-  const screen = candidates.map(() => 100);
+  const screen = normalize(
+  candidates.map((c) => (c.panel === null ? UNKNOWN_PANEL_SCORE : PANEL_SCORE[c.panel])),
+  );
 
   const cpuSingle = normalize(candidates.map((c) => c.cpu.cb2024Single));
   const cpuMulti = normalize(candidates.map((c) => c.cpu.cb2024Multi));

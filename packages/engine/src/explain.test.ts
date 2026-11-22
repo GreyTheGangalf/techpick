@@ -18,12 +18,13 @@ function makeCandidate(overrides: Partial<Candidate> = {}): Candidate {
         weightG: 2200,
         batteryWh: 70,
         screenSizeIn: 16,
+        panel: "ips",
         priceKurus: 3_000_000, // 30.000 TL
         ...overrides,
     };
 }
 
-const sub: SubScores = { cpu: 60, gpu: 100, memory: 20, screen: 100, portability: 10, value: 80 };
+const sub: SubScores = { cpu: 60, gpu: 100, memory: 20, screen: 50, portability: 10, value: 80 };
 
 test("gaming: strengths come from the biggest weighted contributions", () => {
     const e = explain(makeCandidate(), sub, PROFILE_WEIGHTS.gaming);
@@ -39,9 +40,9 @@ test("weakness ignores sub-scores the profile does not care about", () => {
     assert.deepEqual(e.weaknesses, ["It has less memory than other options."]);
 });
 
-test("screen is never a strength while we have no panel data", () => {
-    const e = explain(makeCandidate(), sub, PROFILE_WEIGHTS.creative);
-    assert.ok(!e.strengths.includes("The screen is good."));
+test("a top screen is a strength for creative work", () => {
+    const e = explain(makeCandidate(), { ...sub, screen: 100 }, PROFILE_WEIGHTS.creative);
+    assert.ok(e.strengths.includes("The screen is good."));
 });
 
 test("FreeDOS is always mentioned as a weakness", () => {

@@ -16,6 +16,7 @@ function makeCandidate(overrides: Partial<Candidate> = {}): Candidate {
         weightG: 2200,
         batteryWh: 70,
         screenSizeIn: 16,
+        panel: "ips",
         priceKurus: 3_000_000, // 30.000 TL
         ...overrides,
     };
@@ -41,4 +42,30 @@ test("With the same hardware, the more affordable “Value” model comes out on
     const [a, b] = subScores([makeCandidate({ priceKurus: 2_500_000 }), makeCandidate({ priceKurus: 3_500_000 })]);
     assert.equal(a.value, 100);
     assert.equal(b.value, 0);
+});
+
+test("OLED beats IPS, TN comes last", () => {
+    const [oled, ips, tn] = subScores([
+        makeCandidate({ panel: "oled" }),
+        makeCandidate({ panel: "ips" }),
+        makeCandidate({ panel: "tn" }),
+    ]);
+    assert.equal(oled.screen, 100);
+    assert.equal(ips.screen, 68.75);
+    assert.equal(tn.screen, 0);
+});
+
+test("unknown panel scores like IPS", () => {
+    const [, ips, unknown] = subScores([
+        makeCandidate({ panel: "oled" }),
+        makeCandidate({ panel: "ips" }),
+        makeCandidate({ panel: null }),
+    ]);
+    assert.equal(unknown.screen, ips.screen);
+});
+
+test("same panel everywhere: screen is 100 for all", () => {
+    const [a, b] = subScores([makeCandidate({ panel: "tn" }), makeCandidate({ panel: "tn" })]);
+    assert.equal(a.screen, 100);
+    assert.equal(b.screen, 100);
 });

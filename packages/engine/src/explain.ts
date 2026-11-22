@@ -23,12 +23,10 @@ const WEAKNESS_TEXT: Record<Key, string> = {
   value: "Its performance relative to its price falls short compared to other options.",
 };
 
-// No panel data yet: screen is 100 for everyone, so it can't be a real reason.
-const SKIP: Key[] = ["screen"];
 
 export function explain(c: Candidate, sub: SubScores, w: Weights): Explanation {
-  // Fields the user cares about (weight > 0) and that we have real data for.
-  const keys = (Object.keys(w) as Key[]).filter((k) => w[k] > 0 && !SKIP.includes(k));
+   // Fields the user cares about (weight > 0).
+  const keys = (Object.keys(w) as Key[]).filter((k) => w[k] > 0);
 
   const byContribution = [...keys].sort((a,b) => sub[b] * w[b] -  sub[a] * w[a]);
   const strengths = byContribution.slice(0, 2).map((k) => STRENGTH_TEXT[k]);

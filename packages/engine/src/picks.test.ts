@@ -10,7 +10,7 @@ function makeRanked(id: number, score: number, value: number, priceKurus: number
             cpu: { model: "x", cb2024Single: 100, cb2024Multi: 1000 },
             gpu: { model: "y", timespyGraphics: 10000, timespyRefTgpW: null },
             gpuTgpW: null, ramGb: 16, storageGb: 512, weightG: 2000, batteryWh: 60,
-            screenSizeIn: 15.6, priceKurus
+            screenSizeIn: 15.6, panel: "ips", priceKurus
         },
         sub: { cpu: 50, gpu: 50, memory: 50, screen: 100, portability: 50, value },
         score,
