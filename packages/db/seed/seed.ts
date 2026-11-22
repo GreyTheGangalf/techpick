@@ -64,7 +64,7 @@ async function seedGpus(db: Db) {
   const rows = readCsv("gpus.csv").map((r) => ({
     model: r.model,
     vendor: r.vendor,
-    timespyGraphics: toInt(r.timespy_graphics, "timespy_graphics"),
+    timespyGraphics: toIntOrNull(r.timespy_graphics, "timespy_graphics"),
     timespyRefTgpW: toIntOrNull(r.timespy_ref_tgp_w, "timespy_ref_tgp_w"),
   }));
   await db

@@ -1,0 +1,1 @@
+ALTER TABLE "gpus" ALTER COLUMN "timespy_graphics" DROP NOT NULL;
